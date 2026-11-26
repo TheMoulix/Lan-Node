@@ -1,6 +1,8 @@
 package com.example.lannotes
 
 import android.Manifest
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -11,6 +13,8 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
@@ -20,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowManager
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
@@ -36,8 +41,19 @@ class MainActivity : Activity() {
     private val INK = 0xFFF4F4F5.toInt()
     private val MUTE = 0xFF8B8B93.toInt()
     private val GREEN = 0xFF4ADE80.toInt()
+
     private var running = false
     private var lastCode = ""
+    private var pulse: ObjectAnimator? = null
+
+    private lateinit var dot: View
+    private lateinit var status: TextView
+    private lateinit var card: LinearLayout
+    private lateinit var img: ImageView
+    private lateinit var addr: TextView
+    private lateinit var codeView: TextView
+    private lateinit var openBtn: TextView
+    private lateinit var btn: TextView
 
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
 
@@ -46,8 +62,7 @@ class MainActivity : Activity() {
         if (stroke != null) setStroke(dp(1), stroke)
     }
 
-    private fun ripple(d: GradientDrawable, tint: Int) =
-        RippleDrawable(ColorStateList.valueOf(tint), d, null)
+    private fun ripple(d: GradientDrawable, tint: Int) = RippleDrawable(ColorStateList.valueOf(tint), d, null)
 
     private fun text(t: CharSequence, sp: Float, color: Int, bold: Boolean = false) = TextView(this).apply {
         text = t; textSize = sp; setTextColor(color)
@@ -88,39 +103,40 @@ class MainActivity : Activity() {
             setLineSpacing(0f, 1.15f)
         }
 
-        val dot = View(this).apply { background = shape(MUTE, 8) }
-        val status = text("Остановлен", 14f, MUTE)
+        dot = View(this).apply { background = shape(MUTE, 8) }
+        status = text("Остановлен", 14f, MUTE)
         val statusRow = LinearLayout(this).apply {
             gravity = Gravity.CENTER_VERTICAL
             addView(dot, LinearLayout.LayoutParams(dp(8), dp(8)))
             addView(status, LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply { leftMargin = dp(10) })
         }
 
-        val img = ImageView(this).apply { scaleType = ImageView.ScaleType.FIT_CENTER }
+        img = ImageView(this).apply { scaleType = ImageView.ScaleType.FIT_CENTER }
         val qrBox = FrameLayout(this).apply {
             background = shape(Color.WHITE, 16); setPadding(dp(12), dp(12), dp(12), dp(12))
             addView(img, FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
         }
-        val addr = text("", 20f, INK, true)
-        val codeView = text("", 34f, INK, true).apply { typeface = Typeface.create(Typeface.MONOSPACE, Typeface.BOLD); letterSpacing = 0.08f }
-        val card = LinearLayout(this).apply {
+        addr = text("", 20f, INK, true)
+        codeView = text("", 34f, INK, true).apply {
+            typeface = Typeface.create(Typeface.MONOSPACE, Typeface.BOLD); letterSpacing = 0.08f
+        }
+        card = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             background = shape(PANEL, 20, LINE); setPadding(dp(20), dp(20), dp(20), dp(20))
             visibility = View.GONE
-            addView(qrBox, lp(0, MATCH_PARENT, 0).apply { height = dp(264) })
+            addView(qrBox, lp(0, MATCH_PARENT, dp(264)))
             addView(text("Адрес", 13f, MUTE), lp(20))
             addView(addr, lp(2))
             addView(text("Код доступа", 13f, MUTE), lp(16))
             addView(codeView, lp(2))
         }
 
-        val btn = text("Запустить", 16f, BG, true).apply {
+        btn = text("Запустить", 16f, BG, true).apply {
             gravity = Gravity.CENTER
             background = ripple(shape(INK, 14), 0x33000000)
             isClickable = true
         }
-
-        val openBtn = text("Открыть заметки на телефоне", 16f, INK, true).apply {
+        openBtn = text("Открыть заметки на телефоне", 16f, INK, true).apply {
             gravity = Gravity.CENTER
             background = ripple(shape(PANEL, 14, LINE), 0x22FFFFFF)
             isClickable = true
@@ -138,33 +154,87 @@ class MainActivity : Activity() {
         }
         setContentView(ScrollView(this).apply { setBackgroundColor(BG); addView(content) })
 
-        openBtn.setOnClickListener {
-            startActivity(Intent(this, NotesActivity::class.java).putExtra("url", "http://127.0.0.1:$PORT/?c=$lastCode"))
-        }
+        openBtn.setOnClickListener { openNotes(false) }
+        btn.setOnClickListener { if (running) stopServer() else startServer() }
 
-        btn.setOnClickListener {
-            if (running) {
-                stopService(Intent(this, NotesService::class.java))
-                window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                card.visibility = View.GONE; openBtn.visibility = View.GONE
-                dot.background = shape(MUTE, 8); status.text = "Остановлен"; status.setTextColor(MUTE)
-                btn.text = "Запустить"; btn.setTextColor(BG); btn.background = ripple(shape(INK, 14), 0x33000000)
-                running = false
-                return@setOnClickListener
-            }
-            val ip = localIp()
-            if (ip == null) { status.text = "Нет Wi-Fi. Подключитесь к сети или включите точку доступа."; return@setOnClickListener }
-            val code = Random.nextInt(100000, 1000000).toString()
-            lastCode = code
-            startForegroundService(Intent(this, NotesService::class.java).putExtra("code", code))
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            img.setImageBitmap(qr("http://$ip:$PORT/?c=$code"))
-            addr.text = "$ip:$PORT"
-            codeView.text = code.chunked(3).joinToString(" ")
-            card.visibility = View.VISIBLE; openBtn.visibility = View.VISIBLE
-            dot.background = shape(GREEN, 8); status.text = "Работает"; status.setTextColor(INK)
-            btn.text = "Остановить"; btn.setTextColor(INK); btn.background = ripple(shape(PANEL, 14, LINE), 0x22FFFFFF)
-            running = true
+        NotesService.code?.let { lastCode = it; showRunning(it, false) }
+        handleIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val c = NotesService.code
+        if (c != null && !running) { lastCode = c; showRunning(c, false) }
+        else if (c == null && running && lastCode.isNotEmpty()) showStopped()
+    }
+
+    // Запуск из виджета: поднимаем сервер при необходимости и сразу открываем новую заметку
+    private fun handleIntent(i: Intent?) {
+        if (i?.getBooleanExtra("quick", false) != true) return
+        i.removeExtra("quick")
+        val was = running
+        if (!was && !startServer()) return
+        Handler(Looper.getMainLooper()).postDelayed({ openNotes(true) }, if (was) 0L else 700L)
+    }
+
+    private fun startServer(): Boolean {
+        if (localIp() == null) {
+            status.text = "Нет Wi-Fi. Подключитесь к сети или включите точку доступа."
+            return false
         }
+        val code = Random.nextInt(100000, 1000000).toString()
+        lastCode = code
+        startForegroundService(Intent(this, NotesService::class.java).putExtra("code", code))
+        showRunning(code, true)
+        return true
+    }
+
+    private fun stopServer() {
+        stopService(Intent(this, NotesService::class.java))
+        showStopped()
+    }
+
+    private fun openNotes(newNote: Boolean) {
+        if (lastCode.isEmpty()) return
+        val url = "http://127.0.0.1:$PORT/?c=$lastCode" + if (newNote) "&new=1" else ""
+        startActivity(Intent(this, NotesActivity::class.java).putExtra("url", url))
+    }
+
+    private fun showRunning(code: String, animate: Boolean) {
+        running = true
+        val ip = localIp() ?: "—"
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        img.setImageBitmap(qr("http://$ip:$PORT/?c=$code"))
+        addr.text = "$ip:$PORT"
+        codeView.text = code.chunked(3).joinToString(" ")
+        card.visibility = View.VISIBLE
+        if (animate) {
+            card.alpha = 0f; card.scaleX = 0.94f; card.scaleY = 0.94f; card.translationY = dp(18).toFloat()
+            card.animate().alpha(1f).scaleX(1f).scaleY(1f).translationY(0f)
+                .setDuration(420).setInterpolator(DecelerateInterpolator()).start()
+        }
+        dot.background = shape(GREEN, 8)
+        status.text = "Работает"; status.setTextColor(INK)
+        pulse?.cancel()
+        pulse = ObjectAnimator.ofFloat(dot, "alpha", 1f, 0.3f).apply {
+            duration = 900; repeatCount = ValueAnimator.INFINITE; repeatMode = ValueAnimator.REVERSE; start()
+        }
+        btn.text = "Остановить"; btn.setTextColor(INK); btn.background = ripple(shape(PANEL, 14, LINE), 0x22FFFFFF)
+        openBtn.visibility = View.VISIBLE
+    }
+
+    private fun showStopped() {
+        running = false
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        pulse?.cancel(); dot.alpha = 1f
+        card.visibility = View.GONE; openBtn.visibility = View.GONE
+        dot.background = shape(MUTE, 8); status.text = "Остановлен"; status.setTextColor(MUTE)
+        btn.text = "Запустить"; btn.setTextColor(BG); btn.background = ripple(shape(INK, 14), 0x33000000)
     }
 }
