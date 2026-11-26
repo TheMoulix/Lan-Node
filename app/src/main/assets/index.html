@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Pocket Notes</title>
+<style>
+:root{--bg:#0a0a0b;--panel:#0f0f11;--hover:#131315;--nav:#1a1a1d;--line:#1d1d21;--ink:#f4f4f5;--mute:#8b8b93;--green:#4ade80;--focus:#8ab4ff}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{display:flex;background:var(--bg);color:var(--ink);font:15px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+aside{width:230px;flex:none;border-right:1px solid var(--line);display:flex;flex-direction:column;padding:24px 14px}
+.brand{display:flex;align-items:center;gap:12px;font-size:19px;padding:0 12px 28px}
+.brand b{font-weight:700}.brand span{color:var(--mute)}
+.brand svg{width:26px;height:26px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav{padding:9px 12px;border-radius:8px;background:var(--nav);font-weight:500}
+.sync{margin-top:auto;display:flex;align-items:center;gap:10px;padding:0 12px;color:var(--mute);font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mute)}
+.dot.on{background:var(--green)}
+main{flex:1;min-width:0;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;gap:12px;padding:28px 28px 22px}
+.top h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.01em;margin-right:auto;white-space:nowrap}
+.top .m-brand{display:none}
+input.search{width:240px;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:#050506}
+input.search::placeholder{color:var(--mute)}
+.solid{padding:9px 16px;border-radius:8px;border:0;background:var(--ink);color:var(--bg);font-weight:600}
+.solid:hover{background:#fff}
+.ghost{padding:9px 16px;border-radius:8px;border:1px solid var(--line);background:var(--nav)}
+.ghost:hover{background:#222226}
+.head,.row{display:grid;grid-template-columns:1fr 150px 56px;align-items:center;padding:0 28px}
+.head{height:38px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel);color:var(--mute);font-size:12px;letter-spacing:.06em}
+#rows{flex:1;overflow:auto}
+.row{min-height:68px;border-bottom:1px solid var(--line);cursor:pointer}
+.row:hover{background:var(--hover)}
+.row .n{font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .p{color:var(--mute);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%}
+.row .t{color:#c9c9cf}
+.more{justify-self:end;width:36px;height:36px;border-radius:8px;border:0;background:transparent;color:var(--mute);font-size:20px;line-height:1}
+.more:hover{background:var(--nav);color:var(--ink)}
+.empty{padding:64px 28px;color:var(--mute);text-align:center}
+#edv{flex:1;display:flex;flex-direction:column;min-height:0}
+.etop{display:flex;align-items:center;gap:14px;padding:22px 28px;border-bottom:1px solid var(--line)}
+.etop h2{margin:0;font-size:22px;font-weight:700;margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.etop small{color:var(--mute)}
+textarea{flex:1;border:0;resize:none;background:transparent;padding:28px;font-size:17px;line-height:1.75;width:100%;max-width:50rem;margin:0 auto;outline:0}
+textarea:focus-visible{outline:0}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);padding:24px;width:min(380px,calc(100vw - 32px))}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+dialog h2{margin:0 0 16px;font-size:18px}
+dialog input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#050506;margin-bottom:18px}
+.acts{display:flex;flex-direction:row-reverse;gap:10px}
+@media(max-width:760px){
+  aside{display:none}
+  .top{flex-wrap:wrap;padding:20px 16px 16px}
+  .top .m-brand{display:block;width:100%;color:var(--mute);font-size:14px}
+  input.search{flex:1;width:auto;min-width:0}
+  .head,.row{grid-template-columns:1fr 92px 44px;padding:0 16px}
+  .etop{padding:16px}
+  textarea{padding:20px 16px;font-size:16px}
+}
+@media(prefers-reduced-motion:no-preference){dialog[open]{animation:pop .14s ease-out}@keyframes pop{from{opacity:0;transform:translateY(6px)}}}
+</style></head><body>
+<aside>
+  <div class="brand"><svg viewBox="0 0 24 24"><path d="M6 3.5h8l4 4V20.5H6z"/><path d="M9 12h6M9 16h6"/></svg><div><b>Pocket</b> <span>Notes</span></div></div>
+  <div class="nav">Заметки</div>
+  <div class="sync"><i class="dot" id="dot"></i><span id="st">Подключение</span></div>
+</aside>
+<main>
+  <section id="lv" style="display:flex;flex-direction:column;flex:1;min-height:0">
+    <div class="top"><div class="m-brand"><b style="color:var(--ink)">Pocket</b> Notes</div>
+      <h1>Заметки</h1><input class="search" id="q" placeholder="Поиск" aria-label="Поиск"><button class="solid" id="new">Новая заметка</button></div>
+    <div class="head"><div>НАЗВАНИЕ</div><div>ИЗМЕНЕНО</div><div></div></div>
+    <div id="rows"></div>
+  </section>
+  <section id="edv" hidden>
+    <div class="etop"><button class="ghost" id="back">Назад</button><h2 id="et"></h2><small id="es"></small></div>
+    <textarea id="ed" placeholder="Начните писать" aria-label="Текст заметки"></textarea>
+  </section>
+</main>
+<dialog id="dlg"><form method="dialog"><h2 id="dt"></h2><input id="di" autocomplete="off">
+  <div class="acts"><button class="solid" value="ok" id="dok"></button><button class="ghost" value="no">Отмена</button></div></form></dialog>
+<script>
+const $=s=>document.querySelector(s);
+const url=new URLSearchParams(location.search);
+let code=url.get('c')||sessionStorage.getItem('c')||'';
+if(url.get('c'))history.replaceState(null,'','/');
+let notes=[],cur=null,ws,timer;
+const rtf=new Intl.RelativeTimeFormat('ru',{numeric:'auto'});
+function ago(t){const s=(Date.now()-t)/1000;if(s<60)return 'только что';
+  if(s<3600)return rtf.format(-Math.floor(s/60),'minute');
+  if(s<86400)return rtf.format(-Math.floor(s/3600),'hour');
+  if(s<2592000)return rtf.format(-Math.floor(s/86400),'day');
+  return new Date(t).toLocaleDateString('ru')}
+function ask(title,{input=false,ok='Готово',val='',ph=''}={}){return new Promise(r=>{
+  $('#dt').textContent=title;const di=$('#di');di.hidden=!input;di.value=val;di.placeholder=ph;$('#dok').textContent=ok;
+  const d=$('#dlg');d.returnValue='';
+  d.onclose=()=>r(d.returnValue==='ok'?(input?di.value.trim():true):null);
+  d.showModal();if(input)di.focus()})}
+const api=p=>fetch(p+(p.includes('?')?'&':'?')+'c='+encodeURIComponent(code));
+const send=o=>{if(ws&&ws.readyState===1)ws.send(JSON.stringify(o))};
+function setSync(on){$('#dot').className='dot'+(on?' on':'');$('#st').textContent=on?'Синхронизация включена':'Нет связи с телефоном'}
+function preview(t){return t.replace(/\s+/g,' ').trim().slice(0,120)}
+function touch(name,text){let n=notes.find(x=>x.name===name);if(!n){n={name};notes.push(n)}n.mtime=Date.now();n.preview=preview(text)}
+function draw(){
+  const f=$('#q').value.toLowerCase();
+  const list=notes.filter(n=>(n.name+' '+n.preview).toLowerCase().includes(f)).sort((a,b)=>b.mtime-a.mtime);
+  const box=$('#rows');box.textContent='';
+  if(!list.length){const e=document.createElement('div');e.className='empty';e.textContent=notes.length?'Ничего не найдено':'Заметок пока нет. Нажмите «Новая заметка».';box.append(e);return}
+  for(const n of list){
+    const r=document.createElement('div');r.className='row';r.tabIndex=0;
+    const a=document.createElement('div'),nm=document.createElement('div'),p=document.createElement('div'),t=document.createElement('div'),m=document.createElement('button');
+    nm.className='n';nm.textContent=n.name;p.className='p';p.textContent=n.preview||'Пустая заметка';a.append(nm,p);
+    t.className='t';t.textContent=ago(n.mtime);
+    m.className='more';m.textContent='⋯';m.title='Удалить';m.setAttribute('aria-label','Удалить заметку');
+    m.onclick=async e=>{e.stopPropagation();if(await ask('Удалить заметку «'+n.name+'»?',{ok:'Удалить'})){notes=notes.filter(x=>x!==n);send({op:'delete',name:n.name});draw()}};
+    r.onclick=()=>openNote(n.name);r.onkeydown=e=>{if(e.key==='Enter')openNote(n.name)};
+    r.append(a,t,m);box.append(r)}
+}
+function show(){$('#lv').hidden=!!cur;$('#lv').style.display=cur?'none':'flex';$('#edv').hidden=!cur;if(cur){$('#et').textContent=cur}else draw()}
+async function openNote(n){cur=n;$('#ed').value=await(await api('/api/note/'+encodeURIComponent(n))).text();$('#es').textContent='';show();$('#ed').focus()}
+$('#back').onclick=()=>{cur=null;show()};
+$('#q').oninput=draw;
+$('#ed').oninput=()=>{clearTimeout(timer);$('#es').textContent='Сохранение…';
+  timer=setTimeout(()=>{send({name:cur,text:$('#ed').value});touch(cur,$('#ed').value);$('#es').textContent='Сохранено'},250)};
+$('#new').onclick=async()=>{const n=await ask('Новая заметка',{input:true,ok:'Создать',ph:'Название'});if(!n)return;
+  if(!notes.find(x=>x.name===n)){touch(n,'');send({name:n,text:''})}openNote(n)};
+function connect(){
+  ws=new WebSocket('ws://'+location.host+'/ws?c='+encodeURIComponent(code));
+  ws.onopen=()=>setSync(true);
+  ws.onmessage=e=>{const m=JSON.parse(e.data);
+    if(m.deleted){notes=notes.filter(x=>x.name!==m.name);if(cur===m.name){cur=null;show()}else draw();return}
+    touch(m.name,m.text);
+    if(m.name===cur){const a=$('#ed');if(a.value!==m.text){const s=a.selectionStart;a.value=m.text;a.setSelectionRange(s,s)}}
+    else if(!cur)draw()};
+  ws.onclose=()=>{setSync(false);setTimeout(connect,1500)};
+}
+(async()=>{
+  let bad=false;
+  for(;;){
+    if(!code){code=(await ask(bad?'Неверный код. Попробуйте ещё раз':'Введите код с экрана телефона',{input:true,ok:'Подключиться',ph:'6 цифр'}))||''.replace(/\s/g,'');code=code.replace(/\s/g,'');if(!code)continue}
+    try{const r=await api('/api/notes');if(r.ok){sessionStorage.setItem('c',code);notes=await r.json();break}}
+    catch(e){setSync(false);await new Promise(r=>setTimeout(r,1500));continue}
+    code='';bad=true;sessionStorage.removeItem('c')}
+  show();connect();
+})();
+</script></body></html>
