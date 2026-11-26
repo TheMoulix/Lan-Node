@@ -143,6 +143,12 @@ class MainActivity : Activity() {
             visibility = View.GONE
         }
 
+        val connectBtn = text("Подключиться к другому телефону", 16f, INK, true).apply {
+            gravity = Gravity.CENTER
+            background = ripple(shape(PANEL, 14, LINE), 0x22FFFFFF)
+            isClickable = true
+        }
+
         val content = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(24), dp(28), dp(24), dp(24))
@@ -151,10 +157,14 @@ class MainActivity : Activity() {
             addView(card, lp(20))
             addView(openBtn, lp(16, MATCH_PARENT, dp(54)))
             addView(btn, lp(24, MATCH_PARENT, dp(54)))
+            addView(connectBtn, lp(12, MATCH_PARENT, dp(54)))
         }
         setContentView(ScrollView(this).apply { setBackgroundColor(BG); addView(content) })
 
         openBtn.setOnClickListener { openNotes(false) }
+        connectBtn.setOnClickListener {
+            startActivity(Intent(this, NotesActivity::class.java).putExtra("url", "file:///android_asset/index.html"))
+        }
         btn.setOnClickListener { if (running) stopServer() else startServer() }
 
         NotesService.code?.let { lastCode = it; showRunning(it, false) }
