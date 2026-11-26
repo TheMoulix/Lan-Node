@@ -1,156 +1,219 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
 <title>PocketNotes</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230a0a0b'/%3E%3Cg fill='none' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 4h7l3 3v13H7z'/%3E%3Cpath d='M9.5 12h5M9.5 15.5h5'/%3E%3C/g%3E%3C/svg%3E">
 <style>
-:root{--bg:#0a0a0b;--panel:#111113;--hover:#16161a;--line:#212126;--ink:#f4f4f5;--mute:#8b8b93;--green:#4ade80;--focus:#8ab4ff}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
+:root{--bg:#0a0a0b;--panel:#111113;--hover:#17171b;--line:#212126;--ink:#f4f4f5;--mute:#8b8b93;--green:#4ade80;--acc:#6b9bff;color-scheme:dark}
+:root[data-theme=light]{--bg:#f5f5f7;--panel:#fff;--hover:#f0f0f3;--line:#e2e2e8;--ink:#131316;--mute:#6c6c76;color-scheme:light}
+*{box-sizing:border-box}[hidden]{display:none!important}
 html{background:var(--bg)}
-body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:15px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-button,input,textarea{font:inherit;color:inherit}
-button{cursor:pointer}
-:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.wrap{max-width:760px;margin:0 auto;padding:28px 24px 48px}
+body{margin:0;min-height:100vh;color:var(--ink);font:15px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased;
+ background:radial-gradient(900px 380px at 50% -140px,color-mix(in srgb,var(--acc) 16%,transparent),transparent) no-repeat,var(--bg)}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:max(24px,env(safe-area-inset-top)) 24px 56px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .logo{display:flex;align-items:center;gap:12px;font-size:18px}
 .logo svg{width:26px;height:26px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .logo b{font-weight:700}.logo span{color:var(--mute)}
-.sync{display:flex;align-items:center;gap:10px;color:var(--mute);font-size:14px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--mute);flex:none}
-.dot.on{background:var(--green)}
-h1{margin:36px 0 0;font-size:32px;font-weight:700;letter-spacing:-.01em}
-.sub{margin:8px 0 0;color:var(--mute);max-width:44ch}
-.tools{display:flex;gap:12px;margin-top:24px}
-.search{flex:1;min-width:0;height:52px;padding:0 18px;border-radius:14px;border:1px solid var(--line);background:var(--panel)}
+.right{display:flex;align-items:center;gap:8px}
+.sync{display:flex;align-items:center;gap:9px;color:var(--mute);font-size:13px;margin-right:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mute);flex:none}.dot.on{background:var(--green);box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 18%,transparent)}
+.ib{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;font-size:16px}
+.ib:hover{background:var(--hover)}.ib i{width:14px;height:14px;border-radius:50%;background:var(--acc)}
+#lv{max-width:760px;margin:0 auto}
+h1{margin:40px 0 0;font-size:36px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:baseline;gap:12px}
+h1 small{font-size:14px;font-weight:600;color:var(--mute);letter-spacing:0}
+.sub{margin:8px 0 0;color:var(--mute);max-width:46ch}
+.tools{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.search{flex:1 1 220px;min-width:0;height:52px;padding:0 18px;border-radius:14px;border:1px solid var(--line);background:var(--panel)}
 .search::placeholder{color:var(--mute)}
 .solid{height:52px;padding:0 24px;border:0;border-radius:14px;background:var(--ink);color:var(--bg);font-weight:700;font-size:16px;white-space:nowrap}
-.solid:hover{background:#fff}
-.ghost{height:44px;padding:0 18px;border-radius:14px;border:1px solid var(--line);background:var(--panel)}
-.ghost:hover{background:var(--hover)}
-.card{margin-top:20px;background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden}
-.row{display:grid;grid-template-columns:minmax(0,1fr) auto 40px;align-items:center;gap:16px;padding:14px 12px 14px 22px;border-bottom:1px solid var(--line);cursor:pointer}
-.row:last-child{border-bottom:0}
-.row:hover{background:var(--hover)}
+.solid:hover{opacity:.9}
+.ghost{height:44px;padding:0 16px;border-radius:14px;border:1px solid var(--line);background:var(--panel);white-space:nowrap}
+.ghost:hover{background:var(--hover)}.tools .ghost{height:52px}
+.card{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.row{display:grid;grid-template-columns:36px minmax(0,1fr) auto 40px;align-items:center;gap:10px;padding:13px 10px 13px 12px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s}
+.row:last-child{border-bottom:0}.row:hover{background:var(--hover)}
 .n{font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p{color:var(--mute);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .t{color:var(--mute);font-size:13px;white-space:nowrap}
-.more{width:40px;height:40px;border:0;border-radius:12px;background:transparent;color:var(--mute);font-size:20px;line-height:1}
-.more:hover{background:var(--line);color:var(--ink)}
+.more,.star{width:36px;height:36px;border:0;border-radius:11px;background:transparent;color:var(--mute);font-size:18px;line-height:1}
+.more:hover,.star:hover{background:var(--line);color:var(--ink)}.star.on{color:#fbbf24}
 .empty{padding:56px 24px;text-align:center;color:var(--mute)}
-.etop{display:flex;align-items:center;gap:14px;margin-top:36px}
-.etop h2{margin:0;margin-right:auto;font-size:26px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.etop{display:flex;align-items:center;gap:10px;margin-top:32px;flex-wrap:wrap}
+.etop h2{margin:0;margin-right:auto;font-size:26px;font-weight:800;letter-spacing:-.01em;cursor:text;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1 1 30%}
 .etop small{color:var(--mute);white-space:nowrap}
-.card.editor{height:max(320px,calc(100vh - 240px))}
-.card.editor:focus-within{border-color:#4a4a55}
+.seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:3px}
+.seg button{border:0;background:transparent;padding:7px 13px;border-radius:10px;color:var(--mute)}
+.seg button.on{background:var(--hover);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.editor{display:flex;flex-direction:column;height:max(360px,calc(100vh - 250px));height:max(360px,calc(100dvh - 250px))}
+.editor:focus-within{border-color:color-mix(in srgb,var(--acc) 55%,var(--line))}
+.fmt{display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid var(--line);overflow-x:auto;align-items:center}
+.fmt button{min-width:36px;height:34px;border:0;border-radius:9px;background:transparent;color:var(--mute);font-weight:700;padding:0 8px}
+.fmt button:hover{background:var(--hover);color:var(--ink)}.fmt .sp{flex:1}.fmt small{color:var(--mute);white-space:nowrap;padding:0 8px}
+.panes{flex:1;min-height:0;display:grid;grid-template-columns:1fr}
+#edv[data-mode=split] .panes{grid-template-columns:1fr 1fr}
+#edv[data-mode=text] #pv,#edv[data-mode=view] #ed{display:none}
+#edv[data-mode=split] #pv{border-left:1px solid var(--line)}
 textarea{display:block;width:100%;height:100%;border:0;resize:none;background:transparent;padding:24px;font-size:17px;line-height:1.75;outline:0}
+#pv{overflow:auto;padding:24px;font-size:17px;line-height:1.75}
+#pv h1,#pv h2,#pv h3{margin:1.2em 0 .4em;line-height:1.25;display:block}#pv h1{font-size:30px}#pv h2{font-size:24px}#pv h3{font-size:19px}
+#pv>:first-child{margin-top:0}#pv p{margin:.5em 0}
+#pv code{background:var(--hover);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font:14px ui-monospace,Consolas,monospace}
+#pv blockquote{margin:.6em 0;padding:2px 16px;border-left:3px solid var(--acc);color:var(--mute)}
+#pv hr{border:0;border-top:1px solid var(--line);margin:1.4em 0}#pv a{color:var(--acc)}
+#pv ul,#pv ol{padding-left:1.4em;margin:.5em 0}#pv ul.tasks{list-style:none;padding-left:.2em}
+#pv input[type=checkbox]{accent-color:var(--acc);width:17px;height:17px;vertical-align:-3px;margin-right:6px}
+.mute{color:var(--mute)}
 dialog{border:1px solid var(--line);border-radius:20px;background:var(--panel);color:var(--ink);padding:24px;width:min(400px,calc(100vw - 32px))}
-dialog::backdrop{background:rgba(0,0,0,.65)}
+dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(3px)}
 dialog h2{margin:0 0 16px;font-size:20px}
 dialog input{width:100%;height:48px;padding:0 16px;border-radius:14px;border:1px solid var(--line);background:var(--bg);margin-bottom:18px}
 .acts{display:flex;flex-direction:row-reverse;gap:10px}
-@media(max-width:520px){
-  .wrap{padding:20px 16px 40px}
-  h1{font-size:28px;margin-top:28px}
-  .tools{flex-direction:column}
-  .solid{width:100%}
-  .row{grid-template-columns:minmax(0,1fr) 40px;padding-left:18px}
-  .t{display:none}
-  .card.editor{height:max(300px,calc(100vh - 220px))}
+@media(max-width:900px){.seg [data-m=split]{display:none}}
+@media(max-width:560px){
+ .wrap{padding:max(16px,env(safe-area-inset-top)) 14px calc(40px + env(safe-area-inset-bottom))}
+ h1{font-size:30px;margin-top:28px}.sync span{display:none}
+ .tools .solid,.tools .ghost{flex:1}
+ .row{grid-template-columns:34px minmax(0,1fr) 36px;padding-left:8px}.t{display:none}
+ .editor{height:max(300px,calc(100dvh - 270px))}
+ textarea,#pv{padding:18px 16px;font-size:16px}
 }
-@media(prefers-reduced-motion:no-preference){dialog[open]{animation:pop .14s ease-out}@keyframes pop{from{opacity:0;transform:translateY(6px)}}}
+@media(prefers-reduced-motion:no-preference){dialog[open]{animation:pop .15s ease-out}@keyframes pop{from{opacity:0;transform:translateY(8px)}}}
 </style></head><body>
 <div class="wrap">
-  <div class="top">
-    <div class="logo"><svg viewBox="0 0 24 24"><path d="M6 3.5h8l4 4V20.5H6z"/><path d="M9 12h6M9 16h6"/></svg><div><b>Pocket</b><span>Notes</span></div></div>
-    <div class="sync"><i class="dot" id="dot"></i><span id="st">Подключение</span></div>
+ <div class="top">
+  <div class="logo"><svg viewBox="0 0 24 24"><path d="M6 3.5h8l4 4V20.5H6z"/><path d="M9 12h6M9 16h6"/></svg><div><b>Pocket</b><span>Notes</span></div></div>
+  <div class="right"><div class="sync"><i class="dot" id="dot"></i><span id="st">Подключение</span></div>
+   <button class="ib" id="theme" title="Тема" aria-label="Сменить тему">☾</button><button class="ib" id="acc" title="Цвет акцента" aria-label="Сменить цвет акцента"><i></i></button></div>
+ </div>
+ <section id="lv">
+  <h1>Заметки <small id="cnt"></small></h1>
+  <p class="sub">Хранятся на вашем телефоне и сразу синхронизируются с этим устройством. Поиск работает по тексту заметок.</p>
+  <div class="tools"><input class="search" id="q" placeholder="Поиск по заметкам (Ctrl+K)" aria-label="Поиск"><button class="ghost" id="sort">По дате</button><button class="ghost" id="today">Сегодня</button><button class="solid" id="new">Новая заметка</button></div>
+  <div class="card" id="rows"></div>
+ </section>
+ <section id="edv" hidden data-mode="text">
+  <div class="etop"><button class="ghost" id="back">Назад</button><h2 id="et" title="Нажмите, чтобы переименовать"></h2>
+   <button class="ib" id="estar" title="В избранное" aria-label="В избранное">☆</button>
+   <div class="seg"><button data-m="text">Текст</button><button data-m="split">Рядом</button><button data-m="view">Просмотр</button></div>
+   <button class="ib" id="exp" title="Скачать .md" aria-label="Скачать">⤓</button><button class="ib" id="del" title="Удалить" aria-label="Удалить">🗑</button></div>
+  <div class="card editor">
+   <div class="fmt"><button data-f="b" title="Жирный">B</button><button data-f="i" title="Курсив"><i>I</i></button><button data-f="h" title="Заголовок">H</button><button data-f="l" title="Список">•</button><button data-f="c" title="Задача">☐</button><button data-f="w" title="Ссылка на заметку">[[ ]]</button><button data-f="k" title="Код">&lt;/&gt;</button><span class="sp"></span><small id="stat"></small><small id="es"></small></div>
+   <div class="panes"><textarea id="ed" placeholder="Начните писать. Поддерживается Markdown и ссылки [[на другие заметки]]" aria-label="Текст заметки"></textarea><div id="pv"></div></div>
   </div>
-  <section id="lv">
-    <h1>Заметки</h1>
-    <p class="sub">Заметки хранятся на вашем телефоне и сразу синхронизируются с этим компьютером.</p>
-    <div class="tools"><input class="search" id="q" placeholder="Поиск" aria-label="Поиск"><button class="solid" id="new">Новая заметка</button></div>
-    <div class="card" id="rows"></div>
-  </section>
-  <section id="edv" hidden>
-    <div class="etop"><button class="ghost" id="back">Назад</button><h2 id="et"></h2><small id="es"></small></div>
-    <div class="card editor"><textarea id="ed" placeholder="Начните писать" aria-label="Текст заметки"></textarea></div>
-  </section>
+ </section>
 </div>
 <dialog id="dlg"><form method="dialog"><h2 id="dt"></h2><input id="di" autocomplete="off">
-  <div class="acts"><button class="solid" value="ok" id="dok"></button><button class="ghost" value="no">Отмена</button></div></form></dialog>
+ <div class="acts"><button class="solid" value="ok" id="dok"></button><button class="ghost" value="no">Отмена</button></div></form></dialog>
 <script>
-const $=s=>document.querySelector(s);
+const $=s=>document.querySelector(s),LS=localStorage,FILE=location.protocol==='file:';
 const url=new URLSearchParams(location.search);
-let code=url.get('c')||sessionStorage.getItem('c')||'';
+let base=FILE?(LS.pnBase||''):'',code=url.get('c')||sessionStorage.getItem('c')||'';
 if(url.get('c'))history.replaceState(null,'','/');
-let notes=[],cur=null,skew=0,dirty=false,timer=null,lastList='';
+let notes=[],shown=[],cur=null,curStar=false,skew=0,dirty=false,timer=null,qt=null,lastList='',mode=LS.pnMode||'text',sort=LS.pnSort||'date';
+const ACC=['#6b9bff','#4ade80','#a78bfa','#fbbf24','#fb7185'];
+function look(){const r=document.documentElement;r.dataset.theme=LS.pnTheme||'dark';r.style.setProperty('--acc',ACC[+LS.pnAcc||0]);$('#theme').textContent=r.dataset.theme==='dark'?'☾':'☀'}
+$('#theme').onclick=()=>{LS.pnTheme=(LS.pnTheme||'dark')==='dark'?'light':'dark';look()};
+$('#acc').onclick=()=>{LS.pnAcc=((+LS.pnAcc||0)+1)%ACC.length;look()};look();
+const clean=s=>s.replace(/[^\p{L}\p{N} _-]/gu,'').trim().slice(0,60);
 const rtf=new Intl.RelativeTimeFormat('ru',{numeric:'auto'});
 function ago(t){const s=(Date.now()+skew-t)/1000;if(s<60)return 'только что';
-  if(s<3600)return rtf.format(-Math.floor(s/60),'minute');
-  if(s<86400)return rtf.format(-Math.floor(s/3600),'hour');
-  if(s<2592000)return rtf.format(-Math.floor(s/86400),'day');
-  return new Date(t).toLocaleDateString('ru')}
+ if(s<3600)return rtf.format(-Math.floor(s/60),'minute');if(s<86400)return rtf.format(-Math.floor(s/3600),'hour');
+ if(s<2592000)return rtf.format(-Math.floor(s/86400),'day');return new Date(t).toLocaleDateString('ru')}
 function ask(title,{input=false,ok='Готово',val='',ph=''}={}){return new Promise(r=>{
-  $('#dt').textContent=title;const di=$('#di');di.hidden=!input;di.value=val;di.placeholder=ph;$('#dok').textContent=ok;
-  const d=$('#dlg');d.returnValue='';
-  d.onclose=()=>r(d.returnValue==='ok'?(input?di.value.trim():true):null);
-  d.showModal();if(input)di.focus()})}
-const api=(p,o)=>fetch(p+(p.includes('?')?'&':'?')+'c='+encodeURIComponent(code),o);
-const post=(p,data)=>api(p,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams(data).toString()});
-function setSync(on){$('#dot').className='dot'+(on?' on':'');$('#st').textContent=on?'Синхронизация включена':'Нет связи с телефоном'}
-function preview(t){return t.replace(/\s+/g,' ').trim().slice(0,120)}
+ $('#dt').textContent=title;const di=$('#di');di.hidden=!input;di.value=val;di.placeholder=ph;$('#dok').textContent=ok;
+ const d=$('#dlg');d.returnValue='';d.onclose=()=>r(d.returnValue==='ok'?(input?di.value.trim():true):null);d.showModal();if(input)di.focus()})}
+const api=(p,o)=>fetch(base+p+(p.includes('?')?'&':'?')+'c='+encodeURIComponent(code),o);
+const post=(p,d)=>api(p,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams(d).toString()});
+const setSync=on=>{$('#dot').className='dot'+(on?' on':'');$('#st').textContent=on?'Синхронизация включена':'Нет связи с телефоном'};
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function inl(s){return esc(s).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(^|[^*])\*([^*]+)\*/g,'$1<i>$2</i>')
+ .replace(/\[\[([^\]]+)\]\]/g,'<a href="#" data-wl="$1">$1</a>').replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')}
+function md(t){let o='',l='',ti=0;const cl=()=>{if(l){o+='</'+l+'>';l=''}};
+ for(const ln of t.split('\n')){let m;
+  if(m=ln.match(/^(#{1,3})\s+(.*)/)){cl();o+=`<h${m[1].length}>${inl(m[2])}</h${m[1].length}>`}
+  else if(m=ln.match(/^\s*[-*]\s+\[( |x)\]\s+(.*)/i)){if(l!=='ul'){cl();o+='<ul class="tasks">';l='ul'}o+=`<li><input type="checkbox" data-t="${ti++}" ${m[1]!==' '?'checked':''}>${inl(m[2])}</li>`}
+  else if(m=ln.match(/^\s*[-*]\s+(.*)/)){if(l!=='ul'){cl();o+='<ul>';l='ul'}o+='<li>'+inl(m[1])+'</li>'}
+  else if(m=ln.match(/^\s*\d+\.\s+(.*)/)){if(l!=='ol'){cl();o+='<ol>';l='ol'}o+='<li>'+inl(m[1])+'</li>'}
+  else if(m=ln.match(/^>\s?(.*)/)){cl();o+='<blockquote>'+inl(m[1])+'</blockquote>'}
+  else if(/^---+$/.test(ln.trim())){cl();o+='<hr>'}else if(!ln.trim())cl();else{cl();o+='<p>'+inl(ln)+'</p>'}}
+ cl();return o||'<p class="mute">Пока пусто</p>'}
 function draw(){
-  const f=$('#q').value.toLowerCase();
-  const list=notes.filter(n=>(n.name+' '+n.preview).toLowerCase().includes(f)).sort((a,b)=>b.mtime-a.mtime);
-  const box=$('#rows');box.textContent='';
-  if(!list.length){const e=document.createElement('div');e.className='empty';e.textContent=notes.length?'Ничего не найдено':'Заметок пока нет. Нажмите «Новая заметка».';box.append(e);return}
-  for(const n of list){
-    const r=document.createElement('div');r.className='row';r.tabIndex=0;
-    const a=document.createElement('div'),nm=document.createElement('div'),p=document.createElement('div'),t=document.createElement('div'),m=document.createElement('button');
-    nm.className='n';nm.textContent=n.name;p.className='p';p.textContent=n.preview||'Пустая заметка';a.append(nm,p);
-    t.className='t';t.textContent=ago(n.mtime);
-    m.className='more';m.textContent='⋯';m.title='Удалить';m.setAttribute('aria-label','Удалить заметку');
-    m.onclick=async e=>{e.stopPropagation();if(await ask('Удалить заметку «'+n.name+'»?',{ok:'Удалить'})){notes=notes.filter(x=>x!==n);draw();try{await post('/api/delete',{name:n.name})}catch(_){setSync(false)}}};
-    r.onclick=()=>openNote(n.name);r.onkeydown=e=>{if(e.key==='Enter')openNote(n.name)};
-    r.append(a,t,m);box.append(r)}
+ shown=[...notes].sort((a,b)=>(b.star-a.star)||(sort==='name'?a.name.localeCompare(b.name,'ru'):b.mtime-a.mtime));
+ $('#cnt').textContent=notes.length?notes.length+' шт.':'';const box=$('#rows');box.textContent='';
+ if(!shown.length){const e=document.createElement('div');e.className='empty';e.textContent=$('#q').value?'Ничего не найдено':'Заметок пока нет. Нажмите «Новая заметка».';box.append(e);return}
+ for(const n of shown){const r=document.createElement('div');r.className='row';r.tabIndex=0;
+  const s=document.createElement('button'),a=document.createElement('div'),nm=document.createElement('div'),p=document.createElement('div'),t=document.createElement('div'),m=document.createElement('button');
+  s.className='star'+(n.star?' on':'');s.textContent=n.star?'★':'☆';s.setAttribute('aria-label','Избранное');
+  s.onclick=async e=>{e.stopPropagation();n.star=!n.star;draw();try{await post('/api/star',{name:n.name})}catch(_){setSync(false)}};
+  nm.className='n';nm.textContent=n.name;p.className='p';p.textContent=n.preview||'Пустая заметка';a.append(nm,p);
+  t.className='t';t.textContent=ago(n.mtime)+(n.words?' · '+n.words+' сл.':'');
+  m.className='more';m.textContent='🗑';m.title='Удалить';m.setAttribute('aria-label','Удалить заметку');
+  m.onclick=async e=>{e.stopPropagation();if(await ask('Удалить заметку «'+n.name+'»?',{ok:'Удалить'})){notes=notes.filter(x=>x!==n);draw();try{await post('/api/delete',{name:n.name})}catch(_){setSync(false)}}};
+  r.onclick=()=>openNote(n.name);r.onkeydown=e=>{if(e.key==='Enter')openNote(n.name)};r.append(s,a,t,m);box.append(r)}
 }
-function show(){$('#lv').style.display=cur?'none':'block';$('#edv').hidden=!cur;if(cur)$('#et').textContent=cur;else draw()}
-async function openNote(n){cur=n;dirty=false;$('#ed').value=await(await api('/api/note/'+encodeURIComponent(n))).text();$('#es').textContent='';show();$('#ed').focus()}
-$('#back').onclick=async()=>{if(dirty){clearTimeout(timer);await save()}cur=null;show()};
-$('#q').oninput=draw;
-async function save(){
-  const name=cur,text=$('#ed').value;
-  try{const r=await post('/api/save',{name,text});if(!r.ok)throw 0;
-    if(cur===name&&$('#ed').value===text){dirty=false;$('#es').textContent='Сохранено'}}
-  catch(e){$('#es').textContent='Не сохранено: нет связи';setSync(false)}
-}
-$('#ed').oninput=()=>{dirty=true;clearTimeout(timer);$('#es').textContent='Сохранение…';timer=setTimeout(save,300)};
-$('#new').onclick=async()=>{const n=await ask('Новая заметка',{input:true,ok:'Создать',ph:'Название'});if(!n)return;
-  if(!notes.find(x=>x.name===n)){try{await post('/api/save',{name:n,text:''});notes.push({name:n,mtime:Date.now()+skew,preview:''})}catch(e){setSync(false);return}}
-  openNote(n)};
-function apply(d){skew=d.now-Date.now();notes=d.notes;const j=JSON.stringify(d.notes);const changed=j!==lastList;lastList=j;return changed}
+function stats(){const w=($('#ed').value.match(/\S+/g)||[]).length;$('#stat').textContent=w+' сл. · '+Math.max(1,Math.ceil(w/200))+' мин'}
+function renderMode(){let m=mode;if(m==='split'&&innerWidth<900)m='text';$('#edv').dataset.mode=m;
+ document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));if(m!=='text')$('#pv').innerHTML=md($('#ed').value)}
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;LS.pnMode=mode;renderMode()});
+addEventListener('resize',()=>{if(cur)renderMode()});
+function show(){$('#lv').style.display=cur?'none':'block';$('#edv').hidden=!cur;if(cur){$('#et').textContent=cur;$('#estar').textContent=curStar?'★':'☆';renderMode();stats()}else draw()}
+async function openNote(n){const f=notes.find(x=>x.name===n);cur=n;curStar=!!(f&&f.star);dirty=false;
+ $('#ed').value=await(await api('/api/note/'+encodeURIComponent(n))).text();$('#es').textContent='';show();if(mode!=='view')$('#ed').focus()}
+async function goto(n){n=clean(n);if(!n)return;if(dirty){clearTimeout(timer);await save()}
+ if(!notes.find(x=>x.name===n)){try{await post('/api/save',{name:n,text:''})}catch(e){setSync(false);return}notes.push({name:n,mtime:Date.now()+skew,preview:'',star:false})}openNote(n)}
+async function goList(){if(dirty){clearTimeout(timer);await save()}cur=null;show()}
+$('#back').onclick=goList;
+async function save(){const name=cur,text=$('#ed').value;
+ try{const r=await post('/api/save',{name,text});if(!r.ok)throw 0;if(cur===name&&$('#ed').value===text){dirty=false;$('#es').textContent='Сохранено'}}
+ catch(e){$('#es').textContent='Не сохранено: нет связи';setSync(false)}}
+$('#ed').oninput=()=>{dirty=true;clearTimeout(timer);$('#es').textContent='Сохранение…';timer=setTimeout(save,300);stats();if($('#edv').dataset.mode!=='text')$('#pv').innerHTML=md($('#ed').value)};
+function wrap(a,b,ph){const t=$('#ed'),s=t.selectionStart,e=t.selectionEnd;t.setRangeText(a+(t.value.slice(s,e)||ph)+b,s,e,'select');t.focus();t.dispatchEvent(new Event('input'))}
+function pre(p){const t=$('#ed'),s=t.value.lastIndexOf('\n',t.selectionStart-1)+1;t.setRangeText(p,s,s,'end');t.focus();t.dispatchEvent(new Event('input'))}
+const FM={b:()=>wrap('**','**','текст'),i:()=>wrap('*','*','текст'),h:()=>pre('# '),l:()=>pre('- '),c:()=>pre('- [ ] '),w:()=>wrap('[[',']]','заметка'),k:()=>wrap('`','`','код')};
+document.querySelectorAll('.fmt [data-f]').forEach(b=>b.onclick=()=>{if($('#edv').dataset.mode==='view'){mode='text';renderMode()}FM[b.dataset.f]()});
+$('#pv').onclick=e=>{const a=e.target.closest('a[data-wl]');if(a){e.preventDefault();goto(a.dataset.wl)}};
+$('#pv').onchange=e=>{const i=e.target.dataset.t;if(i===undefined)return;let n=0;
+ $('#ed').value=$('#ed').value.replace(/^(\s*[-*]\s+\[)( |x)(\])/gim,(m,a,c,d)=>n++===+i?a+(c===' '?'x':' ')+d:m);$('#ed').dispatchEvent(new Event('input'))};
+$('#estar').onclick=async()=>{curStar=!curStar;$('#estar').textContent=curStar?'★':'☆';const f=notes.find(x=>x.name===cur);if(f)f.star=curStar;try{await post('/api/star',{name:cur})}catch(_){setSync(false)}};
+$('#et').onclick=async()=>{const n=clean(await ask('Переименовать заметку',{input:true,ok:'Переименовать',val:cur})||'');if(!n||n===cur)return;
+ if(dirty){clearTimeout(timer);await save()}try{const r=await post('/api/rename',{name:cur,to:n});if(!r.ok){await ask('Заметка с таким названием уже есть',{ok:'Понятно'});return}
+ const f=notes.find(x=>x.name===cur);if(f)f.name=n;cur=n;$('#et').textContent=n}catch(e){setSync(false)}};
+$('#del').onclick=async()=>{if(await ask('Удалить заметку «'+cur+'»?',{ok:'Удалить'})){clearTimeout(timer);dirty=false;const n=cur;notes=notes.filter(x=>x.name!==n);cur=null;show();try{await post('/api/delete',{name:n})}catch(_){setSync(false)}}};
+$('#exp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([$('#ed').value],{type:'text/markdown'}));a.download=cur+'.md';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+async function newNote(){const n=await ask('Новая заметка',{input:true,ok:'Создать',ph:'Название'});if(n)goto(n)}
+$('#new').onclick=newNote;
+$('#today').onclick=()=>{const d=new Date(),p=x=>String(x).padStart(2,'0');goto(d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()))};
+$('#sort').onclick=()=>{sort=sort==='date'?'name':'date';LS.pnSort=sort;$('#sort').textContent=sort==='date'?'По дате':'По имени';draw()};
+$('#sort').textContent=sort==='date'?'По дате':'По имени';
+async function refresh(){const q=$('#q').value.trim();const r=await api('/api/notes'+(q?'?q='+encodeURIComponent(q):''));if(!r.ok)throw 0;return apply(await r.json())}
+$('#q').oninput=()=>{clearTimeout(qt);qt=setTimeout(()=>refresh().then(()=>draw()).catch(()=>setSync(false)),250)};
+$('#q').onkeydown=e=>{if(e.key==='Enter'&&shown[0])openNote(shown[0].name)};
+addEventListener('keydown',e=>{const k=e.key.toLowerCase(),c=e.ctrlKey||e.metaKey;if($('#dlg').open)return;
+ if(c&&k==='k'){e.preventDefault();if(cur)goList().then(()=>$('#q').focus());else{$('#q').focus();$('#q').select()}}
+ else if(c&&k==='s'&&cur){e.preventDefault();clearTimeout(timer);save()}
+ else if(e.altKey&&k==='n'){e.preventDefault();newNote()}
+ else if(e.altKey&&k==='e'&&cur){e.preventDefault();mode=$('#edv').dataset.mode==='view'?'text':'view';renderMode()}
+ else if(e.key==='Escape'&&cur)goList()});
+function apply(d){skew=d.now-Date.now();notes=d.notes;const j=JSON.stringify(d.notes);const ch=j!==lastList;lastList=j;return ch}
 async function poll(){
-  try{
-    const r=await api('/api/notes');if(!r.ok)throw 0;
-    const changed=apply(await r.json());
-    if(cur&&!dirty){
-      if(!notes.some(n=>n.name===cur)){cur=null;show()}
-      else{const t=await(await api('/api/note/'+encodeURIComponent(cur))).text();const a=$('#ed');
-        if(!dirty&&a.value!==t){const s=a.selectionStart;a.value=t;a.setSelectionRange(s,s)}}
-    }else if(!cur&&changed)draw();
-    setSync(true);
-  }catch(e){setSync(false)}
-  setTimeout(poll,1500);
-}
-(async()=>{
-  let bad=false;
-  for(;;){
-    if(!code){code=((await ask(bad?'Неверный код. Попробуйте ещё раз':'Введите код с экрана телефона',{input:true,ok:'Подключиться',ph:'6 цифр'}))||'').replace(/\s/g,'');if(!code)continue}
-    try{const r=await api('/api/notes');if(r.ok){sessionStorage.setItem('c',code);apply(await r.json());break}}
-    catch(e){setSync(false);await new Promise(r=>setTimeout(r,1500));continue}
-    code='';bad=true;sessionStorage.removeItem('c')}
-  show();setSync(true);setTimeout(poll,1500);
-})();
+ if(document.hidden){setTimeout(poll,3000);return}
+ try{const ch=await refresh();
+  if(cur&&!dirty){if(!notes.some(n=>n.name===cur)&&!$('#q').value){cur=null;show()}
+   else{const t=await(await api('/api/note/'+encodeURIComponent(cur))).text(),a=$('#ed');
+    if(!dirty&&a.value!==t){const s=a.selectionStart;a.value=t;a.setSelectionRange(s,s);stats();if($('#edv').dataset.mode!=='text')$('#pv').innerHTML=md(t)}}}
+  else if(!cur&&ch)draw();setSync(true)}catch(e){setSync(false)}
+ setTimeout(poll,1500)}
+(async()=>{let bad=false;
+ for(;;){
+  if(FILE&&!base){const a=await ask('Адрес телефона из приложения',{input:true,ok:'Далее',ph:'192.168.1.23:8080'});if(!a)continue;base='http://'+a.replace(/^https?:\/\//,'').replace(/\/+$/,'');LS.pnBase=base}
+  if(!code){code=((await ask(bad?'Неверный код. Попробуйте ещё раз':'Введите код с экрана телефона',{input:true,ok:'Подключиться',ph:'6 цифр'}))||'').replace(/\s/g,'');if(!code)continue}
+  try{const r=await api('/api/notes');if(r.ok){sessionStorage.setItem('c',code);apply(await r.json());break}}
+  catch(e){setSync(false);if(FILE){base='';LS.removeItem('pnBase')}else await new Promise(r=>setTimeout(r,1500));continue}
+  code='';bad=true;sessionStorage.removeItem('c')}
+ show();setSync(true);setTimeout(poll,1500)})();
 </script></body></html>
