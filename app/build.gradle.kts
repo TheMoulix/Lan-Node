@@ -29,6 +29,5 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("org.nanohttpd:nanohttpd:2.3.1")
-    implementation("org.nanohttpd:nanohttpd-websocket:2.3.1")
     implementation("com.google.zxing:core:3.5.3")
 }

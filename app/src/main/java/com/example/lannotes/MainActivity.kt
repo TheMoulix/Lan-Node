@@ -37,6 +37,7 @@ class MainActivity : Activity() {
     private val MUTE = 0xFF8B8B93.toInt()
     private val GREEN = 0xFF4ADE80.toInt()
     private var running = false
+    private var lastCode = ""
 
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
 
@@ -73,10 +74,15 @@ class MainActivity : Activity() {
         window.navigationBarColor = BG
         if (Build.VERSION.SDK_INT >= 33) requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
 
-        val logo = text(SpannableString("Pocket Notes").apply {
+        val logo = text(SpannableString("PocketNotes").apply {
             setSpan(StyleSpan(Typeface.BOLD), 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(ForegroundColorSpan(MUTE), 6, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            setSpan(ForegroundColorSpan(MUTE), 6, 11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }, 18f, INK)
+        val logoRow = LinearLayout(this).apply {
+            gravity = Gravity.CENTER_VERTICAL
+            addView(ImageView(this@MainActivity).apply { setImageResource(R.drawable.ic_logo) }, LinearLayout.LayoutParams(dp(26), dp(26)))
+            addView(logo, LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply { leftMargin = dp(12) })
+        }
         val title = text("Сервер заметок", 32f, INK, true)
         val sub = text("Запустите сервер и откройте адрес на компьютере в той же Wi-Fi сети.", 15f, MUTE).apply {
             setLineSpacing(0f, 1.15f)
@@ -114,21 +120,33 @@ class MainActivity : Activity() {
             isClickable = true
         }
 
+        val openBtn = text("Открыть заметки на телефоне", 16f, INK, true).apply {
+            gravity = Gravity.CENTER
+            background = ripple(shape(PANEL, 14, LINE), 0x22FFFFFF)
+            isClickable = true
+            visibility = View.GONE
+        }
+
         val content = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(24), dp(28), dp(24), dp(24))
-            addView(logo)
+            addView(logoRow)
             addView(title, lp(36)); addView(sub, lp(8)); addView(statusRow, lp(20))
             addView(card, lp(20))
+            addView(openBtn, lp(16, MATCH_PARENT, dp(54)))
             addView(btn, lp(24, MATCH_PARENT, dp(54)))
         }
         setContentView(ScrollView(this).apply { setBackgroundColor(BG); addView(content) })
+
+        openBtn.setOnClickListener {
+            startActivity(Intent(this, NotesActivity::class.java).putExtra("url", "http://127.0.0.1:$PORT/?c=$lastCode"))
+        }
 
         btn.setOnClickListener {
             if (running) {
                 stopService(Intent(this, NotesService::class.java))
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                card.visibility = View.GONE
+                card.visibility = View.GONE; openBtn.visibility = View.GONE
                 dot.background = shape(MUTE, 8); status.text = "Остановлен"; status.setTextColor(MUTE)
                 btn.text = "Запустить"; btn.setTextColor(BG); btn.background = ripple(shape(INK, 14), 0x33000000)
                 running = false
@@ -137,12 +155,13 @@ class MainActivity : Activity() {
             val ip = localIp()
             if (ip == null) { status.text = "Нет Wi-Fi. Подключитесь к сети или включите точку доступа."; return@setOnClickListener }
             val code = Random.nextInt(100000, 1000000).toString()
+            lastCode = code
             startForegroundService(Intent(this, NotesService::class.java).putExtra("code", code))
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             img.setImageBitmap(qr("http://$ip:$PORT/?c=$code"))
             addr.text = "$ip:$PORT"
             codeView.text = code.chunked(3).joinToString(" ")
-            card.visibility = View.VISIBLE
+            card.visibility = View.VISIBLE; openBtn.visibility = View.VISIBLE
             dot.background = shape(GREEN, 8); status.text = "Работает"; status.setTextColor(INK)
             btn.text = "Остановить"; btn.setTextColor(INK); btn.background = ripple(shape(PANEL, 14, LINE), 0x22FFFFFF)
             running = true
