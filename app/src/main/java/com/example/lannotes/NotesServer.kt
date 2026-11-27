@@ -112,8 +112,35 @@ class NotesServer(private val ctx: Context, port: Int, private val code: String)
                 val f = resolve(param(s, "path"))
                 if (f == null || !f.isFile) return reply(Response.Status.NOT_FOUND, "no file")
                 val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(f.extension.lowercase()) ?: "application/octet-stream"
-                val r = newFixedLengthResponse(Response.Status.OK, mime, FileInputStream(f), f.length())
+                val len = f.length()
+                var start = 0L
+                var end = len - 1
+                var partial = false
+                val m = Regex("bytes=(\\d*)-(\\d*)").matchEntire((s.headers["range"] ?: "").trim())
+                if (m != null && len > 0) {
+                    val a = m.groupValues[1]; val b = m.groupValues[2]
+                    if (a.isEmpty() && b.isEmpty()) {
+                        // некорректный Range: отдаём файл целиком
+                    } else {
+                        if (a.isEmpty()) { start = maxOf(0L, len - b.toLong()) }
+                        else { start = a.toLong(); if (b.isNotEmpty()) end = minOf(end, b.toLong()) }
+                        if (start >= len || start > end) {
+                            val bad = newFixedLengthResponse(Response.Status.RANGE_NOT_SATISFIABLE, "text/plain", "")
+                            bad.addHeader("Content-Range", "bytes */$len")
+                            bad.addHeader("Access-Control-Allow-Origin", "*")
+                            return bad
+                        }
+                        partial = true
+                    }
+                }
+                val fis = FileInputStream(f)
+                if (start > 0) fis.channel.position(start)
+                val r = if (partial) newFixedLengthResponse(Response.Status.PARTIAL_CONTENT, mime, fis, end - start + 1)
+                        else newFixedLengthResponse(Response.Status.OK, mime, fis, len)
+                if (partial) r.addHeader("Content-Range", "bytes $start-$end/$len")
+                r.addHeader("Accept-Ranges", "bytes")
                 r.addHeader("Access-Control-Allow-Origin", "*")
+                r.addHeader("Access-Control-Allow-Private-Network", "true")
                 if (param(s, "dl") == "1") r.addHeader("Content-Disposition",
                     "attachment; filename*=UTF-8''" + java.net.URLEncoder.encode(f.name, "UTF-8").replace("+", "%20"))
                 return r
