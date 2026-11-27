@@ -126,13 +126,89 @@ dialog input:focus-visible{outline:0;border-color:var(--acc);box-shadow:0 0 0 3p
  .bar button .i{width:22px;height:22px}.bar .fab{background:var(--ink);color:var(--bg)}
 }
 @media(prefers-reduced-motion:no-preference){.enter{animation:in .26s cubic-bezier(.2,.8,.2,1)}@keyframes in{from{opacity:0;transform:translateY(12px)}}dialog[open]{animation:in .15s ease-out}.row{transition:background .12s}}
+
+/* ===== v2: маскот, плеер, файлы, анимации ===== */
+.logo{cursor:pointer}.logo svg.mc{width:36px;height:38px;stroke:none;stroke-width:initial}
+.mc{overflow:visible}.mc .m2,.mc .m3,.mc .arm{display:none}
+.mc[data-m=happy] .m1,.mc[data-m=sad] .m1{display:none}.mc[data-m=happy] .m2{display:block}.mc[data-m=sad] .m3{display:block}
+.mc[data-m=wave] .arm{display:block}
+.empty .mc{display:block;margin:0 auto 14px}
+.ftools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}.ftools .search{flex:1 1 200px;min-width:0}
+#fchips{overflow-x:auto;scrollbar-width:none;max-width:100%}#fchips button{white-space:nowrap}
+.fsum{color:var(--mute);font-size:13px;margin-top:12px}
+.mixed{margin-top:14px;padding:12px 14px;border:1px solid var(--acc);border-radius:14px;background:color-mix(in srgb,var(--acc) 10%,var(--panel));font-size:14px}.mixed a{color:var(--acc);font-weight:700}
+#fg.list{grid-template-columns:1fr;gap:8px}#fg.list .fc{display:flex;align-items:center}
+#fg.list .th{width:68px;height:68px;aspect-ratio:auto;flex:none}#fg.list .fn{flex:1;min-width:0}
+.th[data-k]{background:color-mix(in srgb,var(--kc) 14%,var(--hover));color:var(--kc)}
+.th[data-k=img]{--kc:#6b9bff}.th[data-k=vid]{--kc:#a78bfa}.th[data-k=aud]{--kc:#fbbf24}.th[data-k=pdf]{--kc:#fb7185}.th[data-k=file]{--kc:var(--mute)}
+.th video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pb{position:absolute;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:#fff;display:grid;place-items:center}.pb .i{width:18px;height:18px;fill:#fff}
+.dur{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:700;padding:2px 6px;border-radius:6px}
+#vdlg{width:min(1040px,96vw)}#vbw{position:relative}#vb{max-height:78vh;min-height:220px;overflow:auto;outline:0}
+#vc{color:var(--mute);font-size:13px;white-space:nowrap}
+.vn{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--panel) 85%,transparent);backdrop-filter:blur(8px);display:grid;place-items:center}.vn.l{left:10px}.vn.r{right:10px}
+#vb img{cursor:zoom-in}#vb.zoom{place-items:start}#vb.zoom img{max-width:none;max-height:none;cursor:zoom-out}
+.pfail{text-align:center;padding:34px 24px;color:var(--mute)}.pfail b{display:block;color:var(--ink);font-size:18px;margin:8px 0 6px}.pfail p{max-width:44ch;margin:0 auto 16px}.pfail .mc{display:block;margin:0 auto}
+.pl{position:relative;background:#000;border-radius:14px;overflow:hidden;width:100%;display:grid;place-items:center;user-select:none;-webkit-user-select:none}
+.pl video{width:100%;max-height:76vh;display:block;background:#000}.pl:fullscreen video{max-height:100vh;height:100%}
+.pl.au{min-height:300px;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--acc) 35%,#000),#000 70%)}.pl .cov{text-align:center;color:#fff;padding:20px 20px 80px}.pl .cov b{display:block;margin-top:10px;max-width:40ch}
+.bp{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:50%;border:0;background:color-mix(in srgb,var(--acc) 88%,#000);color:#fff;display:grid;place-items:center;transition:transform .25s,opacity .25s;z-index:2}.bp .i{width:30px;height:30px;fill:#fff;stroke:none}
+.pl.playing .bp{opacity:0;pointer-events:none;transform:scale(1.5)}
+.pc{position:absolute;left:0;right:0;bottom:0;padding:30px 14px 10px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;transition:opacity .25s;z-index:2}
+.pl.idle.playing .pc{opacity:0}.pl.idle.playing{cursor:none}
+.sk{position:relative;height:18px;cursor:pointer;touch-action:none}.sk::before{content:"";position:absolute;left:0;right:0;top:7px;height:4px;border-radius:2px;background:rgba(255,255,255,.25)}
+.sk i{position:absolute;top:7px;height:4px;border-radius:2px;left:0;width:0}.sk .bf{background:rgba(255,255,255,.35)}.sk .pg{background:var(--acc)}
+.sk .kn{position:absolute;top:3px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#fff;left:0;transform:scale(0);transition:transform .15s}.sk:hover .kn,.sk.d .kn{transform:scale(1)}
+.pr{display:flex;align-items:center;gap:4px}.pr button{border:0;background:transparent;color:#fff;min-width:34px;height:34px;border-radius:10px;display:grid;place-items:center}.pr button:hover{background:rgba(255,255,255,.18)}
+.pr .sd{padding:0 8px;font-weight:700;font-size:13px}.tm{font-size:13px;font-variant-numeric:tabular-nums;margin-left:4px}.pr .sp{flex:1}.vr{width:72px;accent-color:var(--acc)}
+.pr .i,.pc .i{stroke:#fff}.pr button .i[data-f]{fill:#fff}
+@media(max-width:560px){.vr{display:none}.ftools .ghost span{display:none}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes wave{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(25deg)}}
+@keyframes pulse{50%{box-shadow:0 0 0 7px transparent}}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.96)}}
+@media(prefers-reduced-motion:no-preference){
+.mc{animation:bob 3s ease-in-out infinite}.mc .ey{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite}
+.mc[data-m=wave] .arm{animation:wave .45s ease-in-out 4}.mc[data-m=happy]{animation:bob .5s ease-in-out 3}
+.dot.on{animation:pulse 2.4s infinite}
+button{transition:transform .12s,background .15s,border-color .15s}button:active{transform:scale(.94)}
+.fc{transition:border-color .15s,transform .2s,box-shadow .2s}.fc:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.28)}.fc:active{transform:scale(.98)}
+.fc.a{animation:pop .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*38ms)}
+#lv.enter .row{animation:pop .4s cubic-bezier(.2,.8,.2,1) both}
+.toast{animation:pop .25s ease-out}#theme:active .i{transform:rotate(90deg)}.bar .fab:hover{transform:rotate(90deg)}
+#vb img,.pl,.pfail{animation:pop .3s ease-out}.seg button{transition:background .2s,color .2s}}
+#lv.enter .row:nth-child(1){animation-delay:35ms}#lv.enter .row:nth-child(2){animation-delay:70ms}#lv.enter .row:nth-child(3){animation-delay:105ms}#lv.enter .row:nth-child(4){animation-delay:140ms}#lv.enter .row:nth-child(5){animation-delay:175ms}#lv.enter .row:nth-child(6){animation-delay:210ms}#lv.enter .row:nth-child(7){animation-delay:245ms}#lv.enter .row:nth-child(8){animation-delay:280ms}#lv.enter .row:nth-child(9){animation-delay:315ms}#lv.enter .row:nth-child(10){animation-delay:350ms}#lv.enter .row:nth-child(11){animation-delay:385ms}#lv.enter .row:nth-child(12){animation-delay:420ms}
+
+/* ===== v3 ===== */
+.mc .ey{transform-box:fill-box;transform-origin:center}.mc .zz,.mc .gl{display:none}
+.mc[data-m=sleep] .zz{display:block}.mc[data-m=sleep] .ey{transform:scaleY(.12);animation:none}.mc[data-m=sleep] .m1{display:block}
+.mc[data-m=read] .gl{display:block}.mc[data-m=read] .ey{transform:translateY(1.6px)}
+@keyframes zz{0%{opacity:0;transform:translate(0,4px)}50%{opacity:1}100%{opacity:0;transform:translate(3px,-5px)}}
+@media(prefers-reduced-motion:no-preference){.mc[data-m=sleep] .zz{animation:zz 2.4s ease-in-out infinite}}
+#splash{position:fixed;inset:0;z-index:99;display:grid;place-items:center;background:var(--bg);transition:opacity .45s;text-align:center}#splash.out{opacity:0;pointer-events:none}
+#splash b{display:block;margin-top:14px;font-size:24px}#splash .mc{display:block;margin:0 auto}
+:root[data-theme=light]{--bg:#f6f6f3;--hover:#eeeee9;--line:#e1e1d9;--ink:#17171b;--mute:#666670}
+:root[data-theme=light] body{background:radial-gradient(900px 380px at 50% -140px,color-mix(in srgb,var(--acc) 12%,transparent),transparent) no-repeat,var(--bg)}
+:root[data-theme=light] .solid,:root[data-theme=light] .bar .fab{background:var(--ink);color:#fff}
+:root[data-theme=light] .card,:root[data-theme=light] .fc{box-shadow:0 1px 2px rgba(20,20,30,.05)}
+html.cs #ed,html.cs #pv{font-family:var(--nf)!important;font-size:var(--ns)!important}
+#sdlg{width:min(460px,calc(100vw - 24px))}#sdlg label{display:block;color:var(--mute);font-size:13px;margin:14px 0 6px}
+#sdlg .seg{flex-wrap:wrap}#sdlg .seg button{flex:1;justify-content:center}
+#sac{display:flex;gap:10px}#sac button{width:34px;height:34px;border-radius:50%;border:2px solid transparent;box-shadow:0 0 0 1px var(--line)}#sac button.on{border-color:var(--ink)}
+#sdlg input[type=range]{height:auto;padding:0;border:0;background:none;margin:0;accent-color:var(--acc)}
+.szr{display:flex;align-items:center;gap:12px}.szr b{min-width:52px;text-align:right;white-space:nowrap}
+#spv{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);font-family:var(--nf,inherit);font-size:var(--ns,16px)}
+#sdlg .acts{margin-top:18px;flex-direction:row}
+.pload{position:absolute;inset:0;z-index:3;display:grid;place-content:center;gap:12px;text-align:center;color:#fff;background:rgba(0,0,0,.72);padding:20px}
+.pload .tb{width:min(280px,70vw);margin:0 auto;background:rgba(255,255,255,.2)}.pload small{opacity:.75}.pload button{justify-self:center}
 </style></head><body data-v="conn">
 <div class="wrap">
  <div class="top">
-  <div class="logo"><svg viewBox="0 0 24 24"><path d="M6 3.5h8l4 4V20.5H6z"/><path d="M9 12h6M9 16h6"/></svg><div><b>Pocket</b><span>Notes</span></div></div>
+  <div class="logo"><span id="mcw"></span><div><b>Pocket</b><span>Notes</span></div></div>
   <div class="seg tabs"><button data-t="list" data-i="note"> Заметки</button><button data-t="files" data-i="folder"> Файлы</button></div>
   <div class="right"><div class="sync"><i class="dot" id="dot"></i><span id="st">Не подключено</span></div>
-   <button class="ib" id="palb" title="Палитра команд (Ctrl+K)" aria-label="Палитра команд" data-i="command"></button><button class="ib" id="theme" title="Тема" aria-label="Сменить тему"></button><button class="ib" id="acc" title="Цвет акцента" aria-label="Сменить цвет акцента"><i></i></button></div>
+   <button class="ib" id="setb" title="Оформление" aria-label="Оформление" data-i="settings"></button><button class="ib" id="palb" title="Палитра команд (Ctrl+K)" aria-label="Палитра команд" data-i="command"></button><button class="ib" id="theme" title="Тема" aria-label="Сменить тему"></button><button class="ib" id="acc" title="Цвет акцента" aria-label="Сменить цвет акцента"><i></i></button></div>
  </div>
 
  <section id="cv" hidden>
@@ -168,14 +244,25 @@ dialog input:focus-visible{outline:0;border-color:var(--acc);box-shadow:0 0 0 3p
   <h1>Файлы</h1>
   <p class="sub">Папки и файлы хранятся на телефоне. Перетащите файлы в окно или нажмите «Загрузить».</p>
   <div class="fbar"><div class="crumbs" id="crumbs"></div><button class="ghost" id="fnew" data-i="folderplus"> Новая папка</button><button class="solid" id="fup" data-i="upload"> Загрузить</button><input type="file" id="fin" multiple hidden></div>
+  <div class="mixed" id="mixed" hidden>Приложение открыто по https, а телефон отдаёт файлы по http — браузер блокирует превью и видео. <a href="#">Открыть версию с телефона</a></div>
+  <div class="ftools"><input class="search" id="fs" placeholder="Поиск по файлам" aria-label="Поиск по файлам"><div class="seg" id="fchips"></div><button class="ghost" id="fsortb"></button><button class="ib" id="fviewb" aria-label="Вид"></button></div>
+  <div class="fsum" id="fsum"></div>
   <div id="fg"></div>
  </section>
 </div>
 <nav class="bar" aria-label="Навигация"><button id="bhome" data-i="note" aria-label="Заметки"></button><button id="bfiles" data-i="folder" aria-label="Файлы"></button><button id="bnew" class="fab" aria-label="Создать"></button><button id="bsearch" data-i="search" aria-label="Поиск"></button><button id="btoday" data-i="calendar" aria-label="Сегодня"></button></nav>
 <div id="ts" aria-live="polite"></div>
+<div id="splash"><div></div></div>
+<dialog id="sdlg"><h2>Оформление</h2>
+ <label>Тема</label><div class="seg" id="sth"><button data-v="dark">Тёмная</button><button data-v="light">Светлая</button><button data-v="auto">Как в системе</button></div>
+ <label>Цвет акцента</label><div id="sac"></div>
+ <label>Шрифт заметок</label><div class="seg" id="sfn"><button data-v="sans">Обычный</button><button data-v="serif">Serif</button><button data-v="mono">Mono</button><button data-v="read">Читаемый</button></div>
+ <label>Размер текста</label><div class="szr"><input type="range" id="ssz" min="14" max="24" step="1" aria-label="Размер текста"><b id="sszv"></b></div>
+ <div id="spv">Так будет выглядеть ваш текст. Съешь ещё этих мягких булок, да выпей чаю.</div>
+ <div class="acts"><button class="ghost" id="sexp" data-i="download"> Экспорт всех заметок (.zip)</button><button class="solid" id="sok">Готово</button></div></dialog>
 <dialog id="pdlg"><input id="pq" placeholder="Найти заметку или команду…" autocomplete="off" aria-label="Палитра команд"><div id="pl"></div></dialog>
 <dialog id="mdlg"><h2 id="mt"></h2><div id="ml"></div></dialog>
-<dialog id="vdlg"><div class="vh"><b id="vt"></b><button class="ib" id="vdl" aria-label="Скачать" data-i="download"></button><button class="ib" id="vx" aria-label="Закрыть" data-i="x"></button></div><div id="vb"></div></dialog>
+<dialog id="vdlg"><div class="vh"><b id="vt"></b><span id="vc"></span><button class="ib" id="vdl" aria-label="Скачать" data-i="download"></button><button class="ib" id="vx" aria-label="Закрыть" data-i="x"></button></div><div id="vbw"><button class="vn l" id="vp" aria-label="Назад" data-i="chl"></button><div id="vb" tabindex="-1"></div><button class="vn r" id="vnx" aria-label="Вперёд" data-i="chr"></button></div></dialog>
 <dialog id="dlg"><form method="dialog"><h2 id="dt"></h2><input id="di" autocomplete="off"><input id="di2" autocomplete="off">
  <div class="acts"><button class="solid" value="ok" id="dok"></button><button class="ghost" value="no">Отмена</button></div></form></dialog>
 <script>
@@ -216,9 +303,10 @@ const url=new URLSearchParams(location.search);
 let base=FILE?(sessionStorage.getItem('pnBase')||''):'',code=url.get('c')||sessionStorage.getItem('c')||'';
 if(url.get('c'))history.replaceState(null,'','/');
 let notes=[],shown=[],cur=null,curStar=false,skew=0,dirty=false,timer=null,qt=null,lastList='',sort=LS.pnSort||'date',reading=false,view='conn',fpath='',files=[],lastFiles='',connected=false,polling=false;
-const ACC=['#6b9bff','#4ade80','#a78bfa','#fbbf24','#fb7185'];
-function look(){const r=document.documentElement;r.dataset.theme=LS.pnTheme||'dark';r.style.setProperty('--acc',ACC[+LS.pnAcc||0]);$('#theme').innerHTML=ic(r.dataset.theme==='dark'?'moon':'sun')}
-$('#theme').onclick=()=>{LS.pnTheme=(LS.pnTheme||'dark')==='dark'?'light':'dark';look()};
+const ACC=['#6b9bff','#4ade80','#a78bfa','#fbbf24','#fb7185'],ACCL=['#3b6fe0','#16a34a','#7c4dff','#d97706','#e11d48'],FONTS={sans:'',serif:'Georgia,"Times New Roman",serif',mono:'ui-monospace,"Cascadia Code",Consolas,monospace',read:'Verdana,Tahoma,sans-serif'};
+function look(){const r=document.documentElement,t=LS.pnTheme==='auto'?(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'):(LS.pnTheme||'dark');r.dataset.theme=t;r.style.setProperty('--acc',(t==='light'?ACCL:ACC)[+LS.pnAcc||0]);$('#theme').innerHTML=ic(t==='dark'?'moon':'sun');
+ const f=FONTS[LS.pnFont||'sans'],z=+LS.pnSize||0;r.classList.toggle('cs',!!(f||z));r.style.setProperty('--nf',f||'inherit');r.style.setProperty('--ns',(z||16)+'px')}
+$('#theme').onclick=()=>{LS.pnTheme=document.documentElement.dataset.theme==='dark'?'light':'dark';look()};
 $('#acc').onclick=()=>{LS.pnAcc=((+LS.pnAcc||0)+1)%ACC.length;look()};
 const clean=s=>s.replace(/[^\p{L}\p{N} _-]/gu,'').trim().slice(0,60);
 const rtf=new Intl.RelativeTimeFormat('ru',{numeric:'auto'});
@@ -230,7 +318,7 @@ function ask(title,{input=false,input2=false,ok='Готово',val='',val2='',ph
  const d=$('#dlg');d.returnValue='';d.onclose=()=>r(d.returnValue==='ok'?(input2?[a.value.trim(),b.value.trim()]:input?a.value.trim():true):null);d.showModal();if(input)a.focus()})}
 const api=(p,o)=>fetch(base+p+(p.includes('?')?'&':'?')+'c='+encodeURIComponent(code),o);
 const post=(p,d)=>api(p,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams(d).toString()});
-const setSync=on=>{$('#dot').className='dot'+(on?' on':'');$('#st').textContent=!connected?'Не подключено':on?(FILE&&base?base.replace('http://','')+' · онлайн':'Синхронизация включена'):'Нет связи с телефоном'};
+const setSync=on=>{moodSync(on);$('#dot').className='dot'+(on?' on':'');$('#st').textContent=!connected?'Не подключено':on?(FILE&&base?base.replace('http://','')+' · онлайн':'Синхронизация включена'):'Нет связи с телефоном'};
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 function inl(s){return esc(s).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(^|[^*])\*([^*]+)\*/g,'$1<i>$2</i>')
  .replace(/\[\[([^\]]+)\]\]/g,'<a href="#" data-wl="$1">$1</a>').replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')}
@@ -248,8 +336,8 @@ function sheet(title,items){$('#mt').textContent=title;const box=$('#ml');box.te
  items.forEach(it=>{const d=document.createElement('div');d.className='pi'+(it.danger?' danger':'');d.innerHTML=ic(it.i)+'<span class="pt"></span>';d.querySelector('.pt').textContent=it.t;d.onclick=()=>{$('#mdlg').close();it.f()};box.append(d)});
  $('#mdlg').showModal()}
 $('#mdlg').onclick=e=>{if(e.target===$('#mdlg'))$('#mdlg').close()};
-function go(v){view=v;document.body.dataset.v=v;
- for(const [k,id] of [['conn','#cv'],['list','#lv'],['edit','#edv'],['files','#fv']]){const el=$(id),on=k===v;el.hidden=!on;if(on){el.classList.remove('enter');void el.offsetWidth;el.classList.add('enter')}}
+function go(v){view=v;setTimeout(()=>typeof refreshMood==='function'&&refreshMood(),0);document.body.dataset.v=v;
+ for(const [k,id] of [['conn','#cv'],['list','#lv'],['edit','#edv'],['files','#fv']]){const el=$(id),on=k===v;el.hidden=!on;if(on){el.classList.remove('enter');void el.offsetWidth;el.classList.add('enter');setTimeout(()=>el.classList.remove('enter'),900)}}
  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===(v==='files'?'files':'list')));
  $('#bnew').innerHTML=ic(v==='files'?'upload':'plus');
  if(v==='list')draw();else if(v==='files')loadFiles();else if(v==='conn')renderServers()}
@@ -297,7 +385,7 @@ async function goto(n){n=clean(n);if(!n)return;if(dirty){clearTimeout(timer);awa
  if(!notes.find(x=>x.name===n)){try{await post('/api/save',{name:n,text:''})}catch(e){setSync(false);return}notes.push({name:n,mtime:Date.now()+skew,preview:'',star:false})}openNote(n)}
 $('#back').onclick=goList;
 async function save(){const name=cur,text=$('#ed').value;
- try{const r=await post('/api/save',{name,text});if(!r.ok)throw 0;if(cur===name&&$('#ed').value===text){dirty=false;$('#es').textContent='Сохранено'}}
+ try{const r=await post('/api/save',{name,text});if(!r.ok)throw 0;if(cur===name&&$('#ed').value===text){dirty=false;$('#es').textContent='Сохранено';mood('happy',1500)}}
  catch(e){$('#es').textContent='Не сохранено: нет связи';setSync(false)}}
 $('#ed').oninput=()=>{dirty=true;clearTimeout(timer);$('#es').textContent='Сохранение…';timer=setTimeout(save,300);stats();fit()};
 function wrap(a,b,ph){const t=$('#ed'),s=t.selectionStart,e=t.selectionEnd;t.setRangeText(a+(t.value.slice(s,e)||ph)+b,s,e,'select');t.focus();t.dispatchEvent(new Event('input'))}
@@ -343,34 +431,150 @@ const fmtSize=b=>b<1024?b+' Б':b<1048576?(b/1024).toFixed(0)+' КБ':b<10737418
 const fjoin=n=>fpath?fpath+'/'+n:n;
 const furl=(p,dl)=>base+'/api/file?path='+encodeURIComponent(p)+(dl?'&dl=1':'')+'&c='+encodeURIComponent(code);
 const kind=n=>{const e=n.split('.').pop().toLowerCase();return /^(png|jpe?g|gif|webp|bmp|svg|avif)$/.test(e)?'img':/^(mp4|webm|mov|mkv)$/.test(e)?'vid':/^(mp3|wav|ogg|m4a|flac)$/.test(e)?'aud':e==='pdf'?'pdf':'file'};
-async function loadFiles(quiet){try{const r=await api('/api/files?path='+encodeURIComponent(fpath));if(!r.ok)throw 0;const d=await r.json(),j=JSON.stringify(d);if(quiet&&j===lastFiles)return;lastFiles=j;files=d;drawFiles()}catch(e){if(!quiet)setSync(false)}}
+async function loadFiles(quiet){try{const r=await api('/api/files?path='+encodeURIComponent(fpath));if(!r.ok)throw 0;const d=await r.json(),j=JSON.stringify(d);if(quiet&&j===lastFiles)return;lastFiles=j;files=d;drawFiles(!quiet)}catch(e){if(!quiet)setSync(false)}}
 function crumbs(){const c=$('#crumbs');c.textContent='';const parts=fpath?fpath.split('/'):[];
  const add=(label,path,last)=>{const b=document.createElement('button');b.textContent=label;b.className='crumb'+(last?' on':'');b.onclick=()=>{fpath=path;lastFiles='';loadFiles()};c.append(b);if(!last){const s=document.createElement('span');s.textContent='/';c.append(s)}};
  add('Файлы','',!parts.length);parts.forEach((p,i)=>add(p,parts.slice(0,i+1).join('/'),i===parts.length-1))}
-function drawFiles(){crumbs();const g=$('#fg');g.textContent='';
- if(!files.length){const e=document.createElement('div');e.className='empty wide';e.innerHTML='<svg class="art" viewBox="0 0 120 96" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 22a6 6 0 0 1 6-6h24l10 10h46a6 6 0 0 1 6 6v42a6 6 0 0 1-6 6H20a6 6 0 0 1-6-6z" fill="var(--panel)"/><path d="M60 44v22M49 55l11-11 11 11" stroke="var(--acc)"/></svg><b>Папка пуста</b><p>Перетащите файлы сюда или нажмите «Загрузить».</p>';g.append(e);return}
- for(const f of files){const c=document.createElement('div');c.className='fc'+(f.dir?' dir':'');c.tabIndex=0;
-  const th=document.createElement('div');th.className='th';
-  if(f.dir)th.innerHTML=ic('folder',46);
-  else if(kind(f.name)==='img'){const im=new Image();im.loading='lazy';im.alt='';im.src=furl(fjoin(f.name));th.append(im)}
-  else th.innerHTML=ic('file',40)+'<em>'+esc(f.name.includes('.')?f.name.split('.').pop().slice(0,5).toUpperCase():'')+'</em>';
-  const nm=document.createElement('div');nm.className='fn';const box=document.createElement('div'),t=document.createElement('div'),sm=document.createElement('small');
-  t.className='ft';t.textContent=f.name;sm.textContent=f.dir?f.size+' элем.':fmtSize(f.size)+' · '+ago(f.mtime);box.append(t,sm);
-  const m=document.createElement('button');m.className='more';m.innerHTML=ic('dots');m.setAttribute('aria-label','Действия');m.onclick=e=>{e.stopPropagation();fileMenu(f)};
-  nm.append(box,m);c.append(th,nm);c.onclick=()=>openFile(f);c.onkeydown=e=>{if(e.key==='Enter')openFile(f)};g.append(c)}}
-const dl=f=>{const a=document.createElement('a');a.href=furl(fjoin(f.name),1);a.download=f.name;document.body.append(a);a.click();a.remove()};
-function openFile(f){if(f.dir){fpath=fjoin(f.name);lastFiles='';loadFiles();return}
- const k=kind(f.name),u=furl(fjoin(f.name));if(k==='file'){dl(f);return}
- const b=$('#vb');b.textContent='';let el;
- if(k==='img'){el=new Image();el.src=u}else if(k==='vid'){el=document.createElement('video');el.src=u;el.controls=true;el.autoplay=true}
- else if(k==='aud'){el=document.createElement('audio');el.src=u;el.controls=true}else{el=document.createElement('iframe');el.src=u}
- b.append(el);$('#vt').textContent=f.name;$('#vdl').onclick=()=>dl(f);$('#vdlg').showModal()}
-$('#vdlg').onclose=()=>{$('#vb').textContent=''};$('#vx').onclick=()=>$('#vdlg').close();
-$('#vdlg').onclick=e=>{if(e.target===$('#vdlg'))$('#vdlg').close()};
 function fileMenu(f){const it=[];if(!f.dir)it.push({t:'Скачать',i:'download',f:()=>dl(f)});
  it.push({t:'Переименовать',i:'pencil',f:async()=>{const n=await ask('Переименовать',{input:true,val:f.name,ok:'Сохранить'});if(n&&n!==f.name){await post('/api/frename',{path:fjoin(f.name),to:n});loadFiles()}}},
   {t:'Удалить',i:'trash',danger:1,f:async()=>{if(await ask('Удалить «'+f.name+'»'+(f.dir?' вместе с содержимым?':'?'),{ok:'Удалить'})){await post('/api/fdelete',{path:fjoin(f.name)});loadFiles()}}});
  sheet(f.name,it)}
+
+/* ---------- v2: маскот ---------- */
+Object.assign(IC,{play:'<path data-f d="M7 4v16l13-8z"/>',pause:'<rect data-f x="6" y="4" width="4" height="16" rx="1"/><rect data-f x="14" y="4" width="4" height="16" rx="1"/>',
+vol:'<path d="M15 8a5 5 0 0 1 0 8"/><path d="M17.7 5a9 9 0 0 1 0 14"/><path d="M6 15h-2a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h2l3.5-4.5a.8.8 0 0 1 1.5.5v14a.8.8 0 0 1-1.5.5l-3.5-4.5"/>',
+mute:'<path d="M6 15h-2a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h2l3.5-4.5a.8.8 0 0 1 1.5.5v14a.8.8 0 0 1-1.5.5l-3.5-4.5"/><path d="M16 10l4 4m0-4l-4 4"/>',
+fs:'<path d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2M16 4h2a2 2 0 0 1 2 2v2M16 20h2a2 2 0 0 0 2-2v-2"/>',
+chl:'<path d="M15 6l-6 6l6 6"/>',chr:'<path d="M9 6l6 6l-6 6"/>',grid:'<path d="M4 4h6v6h-6zM14 4h6v6h-6zM4 14h6v6h-6zM14 14h6v6h-6z"/>',
+photo:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M3 17l5-4 4 3 3-2 6 4"/>',
+film:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 4v16M16 4v16M4 8h4M4 16h4M16 8h4M16 16h4"/>',
+music:'<path d="M3 17a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M9 17v-13l10 -2v13"/><path d="M13 15a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/>'});
+function mascot(s,m){const k='stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"';
+return '<svg class="mc" data-m="'+(m||moodBase())+'" width="'+s+'" height="'+Math.round(s*1.04)+'" viewBox="0 0 48 50" aria-hidden="true">'+
+'<path d="M17 45.5v2.5M31 45.5v2.5" fill="none" '+k+'/><path class="arm" d="M39 29l5-5" fill="none" '+k+'/>'+
+'<path d="M10 4h19l10 10v29a2.5 2.5 0 0 1-2.5 2.5h-26.5a2.5 2.5 0 0 1-2.5-2.5v-36.5a2.5 2.5 0 0 1 2.5-2.5z" fill="var(--panel)" '+k+'/>'+
+'<path d="M29 4v10h10" fill="var(--hover)" '+k+'/>'+
+'<ellipse class="ey" cx="18" cy="26" rx="2.2" ry="3" fill="var(--ink)"/><ellipse class="ey" cx="30" cy="26" rx="2.2" ry="3" fill="var(--ink)"/>'+
+'<circle cx="13.5" cy="32" r="2.4" fill="var(--acc)" opacity=".5"/><circle cx="34.5" cy="32" r="2.4" fill="var(--acc)" opacity=".5"/>'+
+'<g class="gl" fill="none" '+k+'><circle cx="18" cy="26" r="5.2"/><circle cx="30" cy="26" r="5.2"/><path d="M23.2 26h1.6"/></g><text class="zz" x="36" y="11" font-size="9" font-weight="700" fill="var(--mute)" font-family="sans-serif">z</text>'+
+'<path class="m1" d="M20 33q4 4 8 0" fill="none" '+k+'/><path class="m2" d="M19 32h10q-1 6-5 6t-5-6z" fill="var(--ink)"/><path class="m3" d="M20 37.5q4-4.5 8 0" fill="none" '+k+'/></svg>'}
+let mt=0;
+const moodBase=()=>!connected?'sleep':view==='edit'?'read':'';
+function mood(m,ms){const a=document.querySelectorAll('svg.mc');a.forEach(e=>e.dataset.m=m);clearTimeout(mt);mt=0;if(ms)mt=setTimeout(()=>{mt=0;a.forEach(e=>e.dataset.m=moodBase())},ms)}
+const refreshMood=()=>{if(!mt)mood(moodBase(),0)};
+function moodSync(on){if(!on&&connected)mood('sad',0);else if(on&&document.querySelector('svg.mc[data-m=sad]'))mood(moodBase(),0);else refreshMood()}
+$('#mcw').innerHTML=mascot(36);refreshMood();$('.logo').onclick=()=>mood(Math.random()<.5?'wave':'happy',1800);
+$('#splash div').innerHTML=mascot(120,'wave')+'<b>PocketNotes</b>';setTimeout(()=>$('#splash').classList.add('out'),1200);setTimeout(()=>$('#splash').remove(),1800);
+{const e0=emptyState;emptyState=()=>{const d=e0();const a=d.querySelector('svg.art');if(a&&!$('#q').value)a.outerHTML=mascot(110,'');return d}}
+/* ---------- v2: плеер ---------- */
+const fmtT=s=>{if(!isFinite(s))return'0:00';s=Math.floor(s);const h=s/3600|0,m=(s%3600)/60|0,x=s%60;return(h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0')};
+function failBox(f){const d=document.createElement('div');d.className='pfail';d.innerHTML=mascot(90,'sad')+'<b>Не удалось открыть файл</b><p>Скорее всего, браузер блокирует файлы: страница открыта по https, а телефон отдаёт их по http. Откройте PocketNotes по адресу телефона (http://адрес:8080) или скачайте файл.</p><button class="solid"></button>';
+const b=d.querySelector('button');b.textContent='Скачать';b.onclick=()=>dl(f);return d}
+function mkPlayer(u,k,f){const w=document.createElement('div');w.className='pl'+(k==='aud'?' au':'');
+ const v=document.createElement(k==='aud'?'audio':'video');v.src=u;v.preload='auto';v.playsInline=true;v.volume=+(LS.pnVol??1);v.playbackRate=+(LS.pnRate||1);w.append(v);
+ w.insertAdjacentHTML('beforeend',(k==='aud'?'<div class="cov">'+mascot(130,'happy')+'<b></b></div>':'')+'<button class="bp" aria-label="Играть">'+ic('play')+'</button><div class="pc"><div class="sk"><i class="bf"></i><i class="pg"></i><b class="kn"></b></div><div class="pr"><button data-a="pp" aria-label="Пауза"></button><span class="tm"></span><span class="sp"></span><button data-a="mu" aria-label="Звук"></button><input class="vr" type="range" min="0" max="1" step=".05" aria-label="Громкость"><button class="sd" aria-label="Скорость"></button>'+(k==='vid'?'<button data-a="fs" aria-label="На весь экран">'+ic('fs')+'</button>':'')+'</div></div>');
+ const q=s=>w.querySelector(s),pp=q('[data-a=pp]'),mu=q('[data-a=mu]'),sd=q('.sd'),vr=q('.vr'),sk=q('.sk'),tm=q('.tm');
+ if(k==='aud')q('.cov b').textContent=f.name;
+ const toggle=()=>v.paused?v.play().catch(()=>{}):v.pause(),full=()=>document.fullscreenElement?document.exitFullscreen():w.requestFullscreen&&w.requestFullscreen();
+ const ui=()=>{pp.innerHTML=ic(v.paused?'play':'pause');w.classList.toggle('playing',!v.paused);mu.innerHTML=ic(v.muted||!v.volume?'mute':'vol');vr.value=v.muted?0:v.volume;sd.textContent=v.playbackRate+'×'};
+ const tick=()=>{const d=v.duration||0,p=d?v.currentTime/d*100:0;q('.pg').style.width=p+'%';q('.kn').style.left=p+'%';tm.textContent=fmtT(v.currentTime)+' / '+fmtT(d);if(d&&v.buffered.length)q('.bf').style.width=v.buffered.end(v.buffered.length-1)/d*100+'%'};
+ ['play','pause','volumechange','ratechange'].forEach(e=>v.addEventListener(e,ui));['timeupdate','loadedmetadata','progress'].forEach(e=>v.addEventListener(e,tick));
+ pp.onclick=toggle;q('.bp').onclick=toggle;mu.onclick=()=>{v.muted=!v.muted};
+ vr.oninput=()=>{v.muted=false;v.volume=+vr.value;LS.pnVol=v.volume};
+ sd.onclick=()=>{const R=[.5,.75,1,1.25,1.5,2];v.playbackRate=R[(R.indexOf(v.playbackRate)+1)%R.length];LS.pnRate=v.playbackRate};
+ const fb=q('[data-a=fs]');if(fb)fb.onclick=full;if(k==='vid'){v.onclick=toggle;v.ondblclick=full}
+ const at=e=>{const r=sk.getBoundingClientRect();v.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*(v.duration||0)};
+ sk.onpointerdown=e=>{sk.setPointerCapture(e.pointerId);sk.classList.add('d');at(e)};sk.onpointermove=e=>{if(sk.classList.contains('d'))at(e)};sk.onpointerup=()=>sk.classList.remove('d');
+ let it;const wake=()=>{w.classList.remove('idle');clearTimeout(it);it=setTimeout(()=>w.classList.add('idle'),2500)};w.onpointermove=wake;w.onpointerdown=wake;wake();
+ w._key=e=>{const c=e.key;if((c===' '&&e.target.tagName!=='BUTTON')||c==='k'){toggle();return 1}
+  if(c==='ArrowRight'){v.currentTime+=5;return 1}if(c==='ArrowLeft'){v.currentTime-=5;return 1}
+  if(c==='ArrowUp'){v.muted=false;v.volume=Math.min(1,v.volume+.1);return 1}if(c==='ArrowDown'){v.volume=Math.max(0,v.volume-.1);return 1}
+  if(c==='m'){v.muted=!v.muted;return 1}if(c==='f'&&k==='vid'){full();return 1}};
+ w._abort=()=>{if(w._ac)w._ac.abort();if(w._url)URL.revokeObjectURL(w._url)};
+ async function viaBlob(){const ac=w._ac=new AbortController(),o=document.createElement('div');o.className='pload';o.innerHTML=mascot(70,'')+'<b>Загружаю видео…</b><div class="tb"><i></i></div><small></small><button class="ghost">Отмена</button>';
+  const bar=o.querySelector('i'),sm=o.querySelector('small');o.querySelector('button').onclick=()=>{ac.abort();o.remove();w.replaceChildren(failBox(f))};w.append(o);
+  try{const r=await fetch(u,{signal:ac.signal});if(!r.ok)throw 0;const tot=+r.headers.get('content-length')||f.size||0,rd=r.body.getReader(),ch=[];let got=0;
+   for(;;){const{done,value}=await rd.read();if(done)break;ch.push(value);got+=value.length;if(tot){bar.style.width=Math.round(got/tot*100)+'%';sm.textContent=fmtSize(got)+' из '+fmtSize(tot)}else sm.textContent=fmtSize(got)}
+   w._url=URL.createObjectURL(new Blob(ch,{type:r.headers.get('content-type')||(k==='aud'?'audio/mpeg':'video/mp4')}));o.remove();w._blob=1;v.src=w._url;v.play().catch(()=>{})}
+  catch(e){if(e&&e.name==='AbortError')return;o.remove();w.replaceChildren(failBox(f))}}
+ v.onerror=()=>{if(!v.error)return;if(!w._blob&&!w._ac&&k!=='img')viaBlob();else if(w._blob)w.replaceChildren(failBox(f))};ui();tick();v.play().catch(()=>{});return w}
+/* ---------- v2: файлы ---------- */
+const FT={all:'Все',img:'Фото',vid:'Видео',aud:'Аудио',doc:'Другое'},FSN={name:'По имени',date:'По дате',size:'По размеру'};
+let fq='',ftp='all',fsort=LS.pnFSort||'name',fview=LS.pnFView||'grid',vis=[],mi=[],mx=0;
+for(const [k,t] of Object.entries(FT)){const b=document.createElement('button');b.textContent=t;b.dataset.k=k;b.onclick=()=>{ftp=k;drawFiles(true)};$('#fchips').append(b)}
+$('#fs').oninput=e=>{fq=e.target.value.trim().toLowerCase();drawFiles(false)};
+$('#fsortb').onclick=()=>{const o=Object.keys(FSN);fsort=o[(o.indexOf(fsort)+1)%o.length];LS.pnFSort=fsort;drawFiles(true)};
+$('#fviewb').onclick=()=>{fview=fview==='grid'?'list':'grid';LS.pnFView=fview;drawFiles(true)};
+function visible(){const m=f=>!fq||f.name.toLowerCase().includes(fq);
+ const l=files.filter(f=>f.dir?m(f):m(f)&&(ftp==='all'||(ftp==='doc'?/^(file|pdf)$/.test(kind(f.name)):kind(f.name)===ftp)));
+ const c={name:(a,b)=>a.name.localeCompare(b.name,'ru',{numeric:true}),date:(a,b)=>b.mtime-a.mtime,size:(a,b)=>b.size-a.size}[fsort];
+ return l.sort((a,b)=>(b.dir-a.dir)||(a.dir&&fsort==='size'?c.name(a,b):c(a,b)))}
+function drawFiles(anim){crumbs();const g=$('#fg');g.textContent='';g.className=fview==='list'?'list':'';
+ document.querySelectorAll('#fchips button').forEach(b=>b.classList.toggle('on',b.dataset.k===ftp));
+ $('#fsortb').innerHTML=ic('sort')+'<span> '+FSN[fsort]+'</span>';$('#fviewb').innerHTML=ic(fview==='grid'?'list':'grid');
+ const mx_=location.protocol==='https:'&&base;$('#mixed').hidden=!mx_;if(mx_)$('#mixed a').href=base+'/?c='+encodeURIComponent(code);
+ vis=visible();const nf=files.filter(f=>!f.dir),sz=nf.reduce((s,f)=>s+f.size,0);
+ $('#fsum').textContent=files.length?(files.length-nf.length?'Папок: '+(files.length-nf.length)+' · ':'')+'Файлов: '+nf.length+' · '+fmtSize(sz):'';
+ if(!vis.length){const e=document.createElement('div');e.className='empty wide';e.innerHTML=mascot(110,files.length?'sad':'')+'<b>'+(files.length?'Ничего не найдено':'Папка пуста')+'</b><p>'+(files.length?'Измените поиск или фильтр.':'Перетащите файлы сюда или нажмите «Загрузить».')+'</p>';g.append(e);return}
+ vis.forEach((f,i)=>{const k=f.dir?'dir':kind(f.name),c=document.createElement('div');c.className='fc'+(f.dir?' dir':'')+(anim?' a':'');c.style.setProperty('--i',Math.min(i,14));c.tabIndex=0;
+  const th=document.createElement('div');th.className='th';if(!f.dir)th.dataset.k=k;const u=furl(fjoin(f.name));
+  const icon=()=>{th.insertAdjacentHTML('afterbegin',ic({img:'photo',vid:'film',aud:'music'}[k]||'file',40)+(k==='file'||k==='pdf'?'<em>'+esc(f.name.includes('.')?f.name.split('.').pop().slice(0,5).toUpperCase():'')+'</em>':''))};
+  if(f.dir)th.innerHTML=ic('folder',46);
+  else if(k==='img'){const im=new Image();im.loading='lazy';im.alt='';im.src=u;im.onerror=()=>{im.onerror=null;fetch(u).then(r=>r.ok?r.blob():Promise.reject()).then(b=>{im.src=URL.createObjectURL(b)}).catch(()=>{im.remove();icon()})};th.append(im)}
+  else if(k==='vid'){icon();const v=document.createElement('video');v.muted=true;v.preload='metadata';v.playsInline=true;v.src=u+'#t=0.5';const d=document.createElement('span');d.className='dur';
+   v.onloadedmetadata=()=>{d.textContent=fmtT(v.duration)};v.onerror=()=>v.remove();th.append(v,Object.assign(document.createElement('span'),{className:'pb',innerHTML:ic('play')}),d)}
+  else icon();
+  const nm=document.createElement('div');nm.className='fn';const box=document.createElement('div'),t=document.createElement('div'),sm=document.createElement('small');
+  t.className='ft';t.textContent=f.name;sm.textContent=f.dir?f.size+' элем.':fmtSize(f.size)+' · '+ago(f.mtime);box.append(t,sm);
+  const m=document.createElement('button');m.className='more';m.innerHTML=ic('dots');m.setAttribute('aria-label','Действия');m.onclick=e=>{e.stopPropagation();fileMenu(f)};
+  nm.append(box,m);c.append(th,nm);c.onclick=()=>openFile(f);c.onkeydown=e=>{if(e.key==='Enter')openFile(f)};g.append(c)})}
+const dl=f=>{const a=document.createElement('a');a.href=furl(fjoin(f.name),1);a.download=f.name;document.body.append(a);a.click();a.remove()};
+function showMedia(){const f=mi[mx],k=kind(f.name),u=furl(fjoin(f.name)),b=$('#vb');
+ b.querySelectorAll('.pl').forEach(x=>x._abort&&x._abort());b.querySelectorAll('video,audio').forEach(m=>{m.pause();m.removeAttribute('src');m.load()});b.textContent='';b.classList.remove('zoom');let el;
+ if(k==='img'){el=new Image();el.alt=f.name;el.src=u;el.onclick=()=>b.classList.toggle('zoom');el.onerror=()=>{el.onerror=null;fetch(u).then(r=>r.ok?r.blob():Promise.reject()).then(x=>{el.src=URL.createObjectURL(x)}).catch(()=>b.replaceChildren(failBox(f)))}}
+ else el=mkPlayer(u,k,f);
+ b.append(el);$('#vt').textContent=f.name;$('#vc').textContent=mi.length>1?(mx+1)+' / '+mi.length:'';$('#vp').hidden=$('#vnx').hidden=mi.length<2;$('#vdl').onclick=()=>dl(f)}
+function openFile(f){if(f.dir){fpath=fjoin(f.name);fq='';$('#fs').value='';lastFiles='';loadFiles();return}
+ const k=kind(f.name);if(k==='file'){dl(f);return}
+ if(k==='pdf'){const b=$('#vb');b.textContent='';const el=document.createElement('iframe');el.src=furl(fjoin(f.name));b.append(el);$('#vt').textContent=f.name;$('#vc').textContent='';$('#vp').hidden=$('#vnx').hidden=true;$('#vdl').onclick=()=>dl(f);$('#vdlg').showModal();return}
+ mi=vis.filter(x=>!x.dir&&/^(img|vid|aud)$/.test(kind(x.name)));mx=Math.max(0,mi.indexOf(f));showMedia();$('#vdlg').showModal();$('#vb').focus()}
+const step=d=>{mx=(mx+d+mi.length)%mi.length;showMedia()};$('#vp').onclick=()=>step(-1);$('#vnx').onclick=()=>step(1);
+$('#vdlg').onclose=()=>{$('#vb').querySelectorAll('.pl').forEach(x=>x._abort&&x._abort());$('#vb').querySelectorAll('video,audio').forEach(m=>{m.pause();m.removeAttribute('src');m.load()});$('#vb').textContent=''};$('#vx').onclick=()=>$('#vdlg').close();
+$('#vdlg').onclick=e=>{if(e.target===$('#vdlg'))$('#vdlg').close()};
+document.addEventListener('keydown',e=>{const d=$('#vdlg');if(!d.open||e.ctrlKey||e.metaKey||e.altKey)return;const p=$('#vb .pl');
+ if(p&&p._key&&p._key(e)){e.preventDefault();return}
+ if(e.key==='PageDown'||(!p&&e.key==='ArrowRight')){if(mi.length>1){e.preventDefault();step(1)}}else if(e.key==='PageUp'||(!p&&e.key==='ArrowLeft')){if(mi.length>1){e.preventDefault();step(-1)}}},true);
+
+/* ---------- v3: оформление и экспорт ---------- */
+IC.settings='<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>';
+const crcT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc32=b=>{let c=-1;for(let i=0;i<b.length;i++)c=crcT[(c^b[i])&255]^(c>>>8);return(c^-1)>>>0};
+function makeZip(items){const E=new TextEncoder(),parts=[],cd=[];let off=0;const d=new Date(),dt=((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate(),tm=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1);
+ for(const it of items){const nb=E.encode(it.name),db=E.encode(it.text),crc=crc32(db);
+  const lh=new DataView(new ArrayBuffer(30));lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(10,tm,true);lh.setUint16(12,dt,true);lh.setUint32(14,crc,true);lh.setUint32(18,db.length,true);lh.setUint32(22,db.length,true);lh.setUint16(26,nb.length,true);
+  parts.push(lh.buffer,nb,db);
+  const ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(12,tm,true);ch.setUint16(14,dt,true);ch.setUint32(16,crc,true);ch.setUint32(20,db.length,true);ch.setUint32(24,db.length,true);ch.setUint16(28,nb.length,true);ch.setUint32(42,off,true);
+  cd.push(ch.buffer,nb);off+=30+nb.length+db.length}
+ const cs=cd.reduce((n,x)=>n+(x.byteLength??x.length),0),e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,items.length,true);e.setUint16(10,items.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+ return new Blob([...parts,...cd,e.buffer],{type:'application/zip'})}
+async function exportAll(){if(!notes.length){toast('Нет заметок для экспорта');return}
+ const t=toast('Собираю заметки…'),bar=t.querySelector('i'),items=[];mood('happy',2500);
+ try{for(let i=0;i<notes.length;i++){const n=notes[i].name,r=await api('/api/note/'+encodeURIComponent(n));if(!r.ok)throw 0;items.push({name:n.replace(/[\\/:*?"<>|]/g,'_')+'.md',text:await r.text()});bar.style.width=Math.round((i+1)/notes.length*100)+'%'}
+  const a=document.createElement('a');a.href=URL.createObjectURL(makeZip(items));a.download='PocketNotes-'+new Date().toISOString().slice(0,10)+'.zip';document.body.append(a);a.click();a.remove();
+  t.querySelector('.tt').textContent='Готово: '+items.length+' заметок в архиве'}catch(e){t.querySelector('.tt').textContent='Не удалось собрать архив'}
+ setTimeout(()=>t.remove(),3000)}
+function syncSettings(){document.querySelectorAll('#sth button').forEach(b=>b.classList.toggle('on',b.dataset.v===(LS.pnTheme||'dark')));
+ document.querySelectorAll('#sfn button').forEach(b=>b.classList.toggle('on',b.dataset.v===(LS.pnFont||'sans')));
+ document.querySelectorAll('#sac button').forEach((b,i)=>b.classList.toggle('on',i===(+LS.pnAcc||0)));
+ $('#ssz').value=+LS.pnSize||16;$('#sszv').textContent=($('#ssz').value)+' px';
+ const sp=$('#spv'),r=document.documentElement;sp.style.fontFamily=FONTS[LS.pnFont||'sans']||'inherit';sp.style.fontSize=($('#ssz').value)+'px'}
+ACC.forEach((c,i)=>{const b=document.createElement('button');b.style.background=c;b.setAttribute('aria-label','Акцент '+(i+1));b.onclick=()=>{LS.pnAcc=i;look();syncSettings()};$('#sac').append(b)});
+$('#sth').onclick=e=>{const b=e.target.closest('button');if(b){LS.pnTheme=b.dataset.v;look();syncSettings()}};
+$('#sfn').onclick=e=>{const b=e.target.closest('button');if(b){LS.pnFont=b.dataset.v;look();syncSettings()}};
+$('#ssz').oninput=e=>{LS.pnSize=e.target.value;look();syncSettings()};
+$('#setb').onclick=()=>{syncSettings();$('#sdlg').showModal()};$('#sok').onclick=()=>$('#sdlg').close();
+$('#sexp').onclick=()=>{$('#sdlg').close();exportAll()};$('#sdlg').onclick=e=>{if(e.target===$('#sdlg'))$('#sdlg').close()};
+matchMedia('(prefers-color-scheme:light)').addEventListener('change',()=>{if(LS.pnTheme==='auto')look()});
 $('#fnew').onclick=async()=>{const n=await ask('Новая папка',{input:true,ok:'Создать',ph:'Название'});if(n){await post('/api/mkdir',{path:fpath,name:n});loadFiles()}};
 function toast(t){const d=document.createElement('div');d.className='toast';d.innerHTML='<div class="tt"></div><div class="tb"><i></i></div>';d.querySelector('.tt').textContent=t;$('#ts').append(d);return d}
 function upload(list){for(const f of list){const t=toast(f.name),bar=t.querySelector('i'),x=new XMLHttpRequest(),fd=new FormData();fd.append('file',f,f.name);
@@ -403,7 +607,7 @@ async function connectTo(s){const c=(await ask('Код для '+(s.name||s.addr)
  catch(e){await ask('Нет связи с '+s.addr+'. Проверьте Wi-Fi и что сервер запущен.',{ok:'Понятно'})}
  base='';code=''}
 function disconnect(){connected=false;base='';code='';sessionStorage.removeItem('pnBase');sessionStorage.removeItem('c');notes=[];lastList='';cur=null;setSync(false);go('conn')}
-function startApp(){connected=true;sessionStorage.setItem('c',code);if(FILE)sessionStorage.setItem('pnBase',base);setSync(true);go('list');if(!polling){polling=true;setTimeout(poll,1500)}
+function startApp(){mood('wave',2000);connected=true;sessionStorage.setItem('c',code);if(FILE)sessionStorage.setItem('pnBase',base);setSync(true);go('list');if(!polling){polling=true;setTimeout(poll,1500)}
  if(url.get('new')){url.delete('new');newNote()}}
 async function poll(){
  if(!connected||document.hidden){setTimeout(poll,connected?3000:1500);return}
